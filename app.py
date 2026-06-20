@@ -226,6 +226,11 @@ def index():
     return send_file("wc2026_forecast.html")
 
 
+@app.route("/monitor")
+def monitor():
+    return send_file("monitor.html")
+
+
 @app.route("/api/odds")
 def api_odds():
     data = _get_or_refresh()
@@ -277,7 +282,7 @@ def api_eval():
         cache_ts    = _cache.get("ts", 0)
 
     prob_sum  = round(sum(probs.values()), 2)
-    top5      = sorted(probs.items(), key=lambda x: -x[1])[:5]
+    top5      = sorted(probs.items(), key=lambda x: -x[1])[:10]
     cache_age = round(time.time() - cache_ts, 0) if cache_ts else None
 
     # Shannon entropy of win distribution — decreases as favourite emerges

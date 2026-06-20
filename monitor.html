@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WC 2026 — Model Monitor</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#030812;--s1:#080f1e;--s2:#0c1628;--s3:#111e35;
+  --bdr:rgba(255,255,255,.07);--bdr2:rgba(255,255,255,.13);
+  --gold:#D4A843;--gold-hi:#F0C860;
+  --green:#22C55E;--blue:#4F8EF7;--red:#F05050;--amber:#F59E0B;
+  --tx:#FAFCFF;--tx2:rgba(250,252,255,.58);--tx3:rgba(250,252,255,.27);--tx4:rgba(250,252,255,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+.page{max-width:1100px;margin:0 auto;padding:32px 20px 80px;}
+
+/* Header */
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:12px;}
+.hdr-left h1{font-size:1.4rem;font-weight:800;letter-spacing:-.01em;}
+.hdr-left p{color:var(--tx3);font-size:.78rem;margin-top:3px;}
+.status-pill{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 20px;
+  border-radius:99px;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid;
+}
+.status-pill.ok{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:var(--green);}
+.status-pill.degraded{background:rgba(240,80,80,.1);border-color:rgba(240,80,80,.3);color:var(--red);}
+.status-pill.warming_up{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3);color:var(--amber);}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor;animation:throb 1.6s infinite;}
+@keyframes throb{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+/* Refresh bar */
+.refresh-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--s1);border:1px solid var(--bdr);border-radius:12px;
+  padding:10px 18px;margin-bottom:24px;font-size:.72rem;color:var(--tx3);
+}
+.refresh-bar strong{color:var(--tx2);}
+.refresh-progress{
+  flex:1;max-width:200px;height:3px;background:var(--tx4);border-radius:99px;margin:0 14px;overflow:hidden;
+}
+.refresh-fill{height:100%;background:var(--blue);border-radius:99px;animation:countdown 30s linear infinite;}
+@keyframes countdown{from{width:100%;}to{width:0%;}}
+button.force-btn{
+  background:rgba(79,142,247,.1);border:1px solid rgba(79,142,247,.25);
+  color:var(--blue);font-size:.7rem;font-weight:700;padding:5px 14px;
+  border-radius:8px;cursor:pointer;font-family:inherit;
+}
+button.force-btn:hover{background:rgba(79,142,247,.18);}
+
+/* Grid layouts */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+@media(max-width:700px){.grid4{grid-template-columns:1fr 1fr;}.grid2{grid-template-columns:1fr;}}
+
+/* Metric card */
+.mcard{
+  background:var(--s1);border:1px solid var(--bdr);border-radius:16px;padding:20px;
+  position:relative;overflow:hidden;
+}
+.mcard::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.09) 40%,rgba(255,255,255,.09) 60%,transparent);
+}
+.mcard-label{font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--tx3);margin-bottom:10px;}
+.mcard-val{font-size:1.8rem;font-weight:900;line-height:1;font-family:'JetBrains Mono',monospace;}
+.mcard-sub{font-size:.7rem;color:var(--tx3);margin-top:6px;}
+.green{color:var(--green);}
+.red{color:var(--red);}
+.amber{color:var(--amber);}
+.blue{color:var(--blue);}
+.gold{color:var(--gold-hi);}
+
+/* Section */
+.section{background:var(--s1);border:1px solid var(--bdr);border-radius:18px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden;}
+.section::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.09) 40%,rgba(255,255,255,.09) 60%,transparent);
+}
+.section-hd{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.section-hd h2{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--tx3);}
+.accent{width:3px;height:16px;border-radius:99px;flex-shrink:0;}
+.accent.blue{background:linear-gradient(to bottom,var(--blue),#2563eb);}
+.accent.green{background:linear-gradient(to bottom,var(--green),#16a34a);}
+.accent.amber{background:linear-gradient(to bottom,var(--amber),#d97706);}
+.accent.gold{background:linear-gradient(to bottom,var(--gold-hi),var(--gold));}
+
+/* Warnings */
+.warn-list{display:flex;flex-direction:column;gap:8px;}
+.warn-item{
+  display:flex;align-items:flex-start;gap:12px;
+  background:rgba(240,80,80,.07);border:1px solid rgba(240,80,80,.2);
+  border-radius:10px;padding:12px 16px;font-size:.8rem;line-height:1.5;
+}
+.warn-icon{flex-shrink:0;font-size:1rem;}
+.warn-code{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--red);font-weight:600;}
+.warn-none{color:var(--tx3);font-size:.82rem;display:flex;align-items:center;gap:8px;}
+
+/* Prob bars */
+.prob-rows{display:flex;flex-direction:column;gap:9px;}
+.prob-row{display:flex;align-items:center;gap:12px;}
+.prob-rank{width:22px;font-size:.7rem;color:var(--tx3);font-weight:700;text-align:center;flex-shrink:0;}
+.prob-team{width:110px;font-size:.82rem;font-weight:600;flex-shrink:0;}
+.prob-bar-wrap{flex:1;height:8px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;}
+.prob-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#16a34a,#22c55e);transition:width .6s cubic-bezier(.4,0,.2,1);}
+.prob-bar-fill.top3{background:linear-gradient(90deg,var(--gold),var(--gold-hi));}
+.prob-pct{width:52px;text-align:right;font-size:.82rem;font-weight:800;flex-shrink:0;font-family:'JetBrains Mono',monospace;}
+
+/* Eval table */
+.eval-table{width:100%;border-collapse:collapse;font-size:.78rem;}
+.eval-table th{color:var(--tx3);font-size:.64rem;text-transform:uppercase;letter-spacing:.09em;padding:0 10px 12px;text-align:right;border-bottom:1px solid var(--bdr);font-weight:700;}
+.eval-table th:first-child{text-align:left;}
+.eval-table td{padding:7px 10px;text-align:right;border-bottom:1px solid rgba(255,255,255,.03);}
+.eval-table td:first-child{text-align:left;font-weight:600;}
+.eval-table tr:last-child td{border-bottom:none;}
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:.7rem;font-weight:700;}
+.badge.pass{background:rgba(34,197,94,.14);color:#4ade80;}
+.badge.fail{background:rgba(240,80,80,.14);color:#f87171;}
+
+/* Log panel */
+.log-panel{
+  background:var(--bg);border:1px solid var(--bdr);border-radius:10px;
+  padding:14px 16px;font-family:'JetBrains Mono',monospace;font-size:.72rem;
+  color:var(--tx3);line-height:1.8;max-height:180px;overflow-y:auto;
+}
+.log-entry{display:block;}
+.log-entry.info{color:var(--blue);}
+.log-entry.warn{color:var(--amber);}
+.log-entry.ok{color:var(--green);}
+
+/* Entropy gauge */
+.entropy-wrap{display:flex;align-items:flex-end;gap:8px;}
+.entropy-bar-set{display:flex;align-items:flex-end;gap:3px;height:40px;}
+.ebar{width:8px;background:var(--blue);border-radius:3px 3px 0 0;opacity:.6;transition:height .5s;}
+
+footer{text-align:center;color:var(--tx3);font-size:.68rem;margin-top:40px;padding-top:20px;border-top:1px solid var(--bdr);}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="hdr">
+    <div class="hdr-left">
+      <h1>⚙️ WC 2026 — Model Monitor</h1>
+      <p>Health · Guardrails · Calibration · LLM eval</p>
+    </div>
+    <div id="statusPill" class="status-pill warming_up">
+      <span class="dot"></span><span id="statusText">Loading…</span>
+    </div>
+  </div>
+
+  <!-- Refresh bar -->
+  <div class="refresh-bar">
+    <strong>Auto-refresh</strong>: every 30 s
+    <div class="refresh-progress"><div class="refresh-fill" id="rfill"></div></div>
+    <span id="lastFetch">—</span>
+    <button class="force-btn" onclick="fetchAll()" style="margin-left:14px">↻ Now</button>
+  </div>
+
+  <!-- Row 1 — service metrics -->
+  <div class="grid4">
+    <div class="mcard">
+      <div class="mcard-label">Simulation</div>
+      <div class="mcard-val" id="mSimOk">—</div>
+      <div class="mcard-sub" id="mUpdatedAt">Last run: —</div>
+    </div>
+    <div class="mcard">
+      <div class="mcard-label">Cache age</div>
+      <div class="mcard-val blue" id="mCacheAge">—</div>
+      <div class="mcard-sub">TTL: 3600 s</div>
+    </div>
+    <div class="mcard">
+      <div class="mcard-label">Matches ingested</div>
+      <div class="mcard-val gold" id="mMatchCount">—</div>
+      <div class="mcard-sub">of 72 group stage</div>
+    </div>
+    <div class="mcard">
+      <div class="mcard-label">Fixtures remaining</div>
+      <div class="mcard-val blue" id="mFixtureCount">—</div>
+      <div class="mcard-sub">group stage unplayed</div>
+    </div>
+  </div>
+
+  <!-- Row 2 — model calibration -->
+  <div class="grid4">
+    <div class="mcard">
+      <div class="mcard-label">Prob sum</div>
+      <div class="mcard-val" id="mProbSum">—</div>
+      <div class="mcard-sub">target: 100 %</div>
+    </div>
+    <div class="mcard">
+      <div class="mcard-label">Calibrated</div>
+      <div class="mcard-val" id="mCalib">—</div>
+      <div class="mcard-sub">95–105 % window</div>
+    </div>
+    <div class="mcard">
+      <div class="mcard-label">Shannon entropy</div>
+      <div class="mcard-val blue" id="mEntropy">—</div>
+      <div class="mcard-sub">bits — drops as fav emerges</div>
+    </div>
+    <div class="mcard">
+      <div class="mcard-label">Stage monotonic</div>
+      <div class="mcard-val" id="mMono">—</div>
+      <div class="mcard-sub">R32 ≥ R16 ≥ QF ≥ …</div>
+    </div>
+  </div>
+
+  <!-- Guardrail warnings -->
+  <div class="section">
+    <div class="section-hd">
+      <div class="accent amber"></div>
+      <h2>Guardrail Warnings <span id="warnCount" style="color:var(--tx2);font-weight:500;text-transform:none;letter-spacing:0;font-size:.78rem"></span></h2>
+    </div>
+    <div class="warn-list" id="warnList">
+      <div class="warn-none">⏳ Loading…</div>
+    </div>
+  </div>
+
+  <!-- Probability distribution -->
+  <div class="section">
+    <div class="section-hd">
+      <div class="accent gold"></div>
+      <h2>Championship Win Probability — Top 10</h2>
+    </div>
+    <div class="prob-rows" id="probRows">
+      <div style="color:var(--tx3);font-size:.82rem">Loading…</div>
+    </div>
+  </div>
+
+  <!-- Stage breakdown eval -->
+  <div class="section">
+    <div class="section-hd">
+      <div class="accent blue"></div>
+      <h2>Stage Probability Eval — Top 5</h2>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="eval-table">
+        <thead>
+          <tr>
+            <th>Team</th>
+            <th>R32 %</th><th>R16 %</th><th>QF %</th>
+            <th>SF %</th><th>Final %</th><th>Win %</th>
+            <th>Monotonic</th>
+          </tr>
+        </thead>
+        <tbody id="evalBody">
+          <tr><td colspan="8" style="color:var(--tx3);padding:14px 0">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Activity log -->
+  <div class="section">
+    <div class="section-hd">
+      <div class="accent green"></div>
+      <h2>Activity Log</h2>
+    </div>
+    <div class="log-panel" id="logPanel">
+      <span class="log-entry info">[boot] Monitor loaded — waiting for first fetch…</span>
+    </div>
+  </div>
+
+  <footer>
+    WC 2026 Forecast · Model Monitor · Auto-refresh 30 s ·
+    <a href="/" style="color:var(--blue);text-decoration:none">← Back to dashboard</a>
+  </footer>
+</div>
+
+<script>
+const FLAGS={
+  "Mexico":"🇲🇽","South Korea":"🇰🇷","Czechia":"🇨🇿","South Africa":"🇿🇦",
+  "Canada":"🇨🇦","Switzerland":"🇨🇭","Bosnia":"🇧🇦","Qatar":"🇶🇦",
+  "Brazil":"🇧🇷","Morocco":"🇲🇦","Scotland":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","Haiti":"🇭🇹",
+  "USA":"🇺🇸","Australia":"🇦🇺","Turkey":"🇹🇷","Paraguay":"🇵🇾",
+  "Germany":"🇩🇪","Ivory Coast":"🇨🇮","Ecuador":"🇪🇨","Curacao":"🇨🇼",
+  "Netherlands":"🇳🇱","Japan":"🇯🇵","Sweden":"🇸🇪","Tunisia":"🇹🇳",
+  "Belgium":"🇧🇪","Egypt":"🇪🇬","Iran":"🇮🇷","New Zealand":"🇳🇿",
+  "Spain":"🇪🇸","Uruguay":"🇺🇾","Saudi Arabia":"🇸🇦","Cabo Verde":"🇨🇻",
+  "France":"🇫🇷","Norway":"🇳🇴","Senegal":"🇸🇳","Iraq":"🇮🇶",
+  "Argentina":"🇦🇷","Austria":"🇦🇹","Jordan":"🇯🇴","Algeria":"🇩🇿",
+  "Portugal":"🇵🇹","Colombia":"🇨🇴","DR Congo":"🇨🇩","Uzbekistan":"🇺🇿",
+  "England":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Croatia":"🇭🇷","Ghana":"🇬🇭","Panama":"🇵🇦",
+};
+
+let _log=[];
+
+function addLog(msg,type="info"){
+  const ts=new Date().toLocaleTimeString("en-GB");
+  _log.unshift({msg,type,ts});
+  if(_log.length>40)_log.pop();
+  document.getElementById("logPanel").innerHTML=
+    _log.map(l=>`<span class="log-entry ${l.type}">[${l.ts}] ${l.msg}</span>`).join("\n");
+}
+
+function setCard(id,val,cls=""){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.textContent=val;
+  el.className="mcard-val"+(cls?" "+cls:"");
+}
+
+function badge(pass){
+  return `<span class="badge ${pass?"pass":"fail"}">${pass?"✓ PASS":"✗ FAIL"}</span>`;
+}
+
+function fmtAge(s){
+  if(s===null||s===undefined)return"—";
+  if(s<60)return`${s}s`;
+  return`${Math.round(s/60)}m ${Math.round(s%60)}s`;
+}
+
+async function fetchHealth(){
+  const r=await fetch("/health");
+  return r.json();
+}
+async function fetchEval(){
+  const r=await fetch("/api/eval");
+  return r.json();
+}
+
+async function fetchAll(){
+  try{
+    const[h,e]=await Promise.all([fetchHealth(),fetchEval()]);
+
+    // Status pill
+    const pill=document.getElementById("statusPill");
+    const st=h.status||"degraded";
+    pill.className="status-pill "+st;
+    document.getElementById("statusText").textContent=
+      st==="ok"?"Healthy":st==="warming_up"?"Warming up":"Degraded";
+
+    // Row 1
+    const simOk=h.simulation_ok;
+    setCard("mSimOk", simOk?"Ready":"Not ready", simOk?"green":"red");
+    document.getElementById("mUpdatedAt").textContent=
+      h.updated_at?`Run: ${new Date(h.updated_at).toLocaleTimeString()}`:"Not run yet";
+    const age=h.cache_age_s;
+    setCard("mCacheAge", age!==null?fmtAge(age):"—", age<300?"green":age<3600?"amber":"red");
+    setCard("mMatchCount", h.match_count??e.match_count??"—", "gold");
+    setCard("mFixtureCount", e.fixture_count??"—", "blue");
+
+    // Row 2
+    const ps=e.prob_sum_pct;
+    setCard("mProbSum", ps!==undefined?ps.toFixed(1)+"%":"—",
+      ps>=95&&ps<=105?"green":ps>=90&&ps<=110?"amber":"red");
+    setCard("mCalib", e.prob_calibrated!=null?(e.prob_calibrated?"Yes":"No"):"—",
+      e.prob_calibrated?"green":"red");
+    const ent=e.entropy_bits;
+    setCard("mEntropy", ent!==undefined?ent.toFixed(2)+" b":"—", "blue");
+    setCard("mMono", e.stage_monotonic!=null?(e.stage_monotonic?"Yes":"No"):"—",
+      e.stage_monotonic?"green":"red");
+
+    // Guardrail warnings
+    const warns=e.guardrail_warnings||h.guardrail_warnings||[];
+    document.getElementById("warnCount").textContent=`(${warns.length})`;
+    if(warns.length===0){
+      document.getElementById("warnList").innerHTML=
+        `<div class="warn-none"><span style="color:var(--green)">✓</span> All guardrails passing — no issues detected.</div>`;
+    } else {
+      document.getElementById("warnList").innerHTML=warns.map(w=>{
+        const [code,...rest]=w.split(":");
+        return`<div class="warn-item">
+          <span class="warn-icon">⚠️</span>
+          <div><span class="warn-code">${code}</span>${rest.length?": "+rest.join(":"):""}
+          </div></div>`;
+      }).join("");
+    }
+
+    // Probability bars
+    const top10=(e.top5||[]).slice(0,10);
+    // Get full probs from /api/odds cached data via eval top5 — extend with a quick fetch if needed
+    if(top10.length){
+      const maxP=top10[0].prob;
+      document.getElementById("probRows").innerHTML=top10.map(({team,prob},i)=>`
+        <div class="prob-row">
+          <span class="prob-rank">${i+1}</span>
+          <span class="prob-team">${FLAGS[team]||""} ${team}</span>
+          <div class="prob-bar-wrap">
+            <div class="prob-bar-fill ${i<3?"top3":""}" style="width:${(prob/maxP*100).toFixed(1)}%"></div>
+          </div>
+          <span class="prob-pct ${i===0?"gold":""}">${prob.toFixed(1)}%</span>
+        </div>`).join("");
+    }
+
+    // Stage eval table — fetch stage_probs from /api/odds
+    renderEvalTable(e.top5||[]);
+
+    // Log
+    const warnStr=warns.length?` · ⚠️ ${warns.length} warning(s)`:" · ✓ clean";
+    addLog(`Fetch OK — status:${st}, cache:${fmtAge(age)}, Σprobs:${ps?.toFixed(1)}%${warnStr}`,
+      warns.length?"warn":"ok");
+
+  }catch(err){
+    addLog(`Fetch FAILED: ${err.message}`,"warn");
+  }
+
+  document.getElementById("lastFetch").textContent=
+    "Last: "+new Date().toLocaleTimeString();
+
+  // Restart the countdown bar animation
+  const fill=document.getElementById("rfill");
+  fill.style.animation="none";
+  fill.offsetHeight; // reflow
+  fill.style.animation="countdown 30s linear";
+}
+
+async function renderEvalTable(top5){
+  try{
+    const r=await fetch("/api/odds");
+    const d=await r.json();
+    const sp=d.stage_probs||{};
+    const KEYS=["r32","r16","qf","sf","final","win"];
+    const rows=top5.map(({team})=>{
+      if(!sp[team])return"";
+      const s=sp[team];
+      // Check monotonicity for this team
+      const mono=KEYS.every((k,i)=>i===0||s[KEYS[i-1]]===undefined||s[k]===undefined||(s[KEYS[i-1]]>=s[k]-0.5));
+      const fmt=k=>{
+        const v=s[k]??0;
+        const cls=v>=50?"gold":v>=20?"green":v>=5?"blue":"";
+        return`<td><span style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--${cls||"tx2"})">${v.toFixed(0)}%</span></td>`;
+      };
+      return`<tr>
+        <td>${FLAGS[team]||""} ${team}</td>
+        ${KEYS.map(fmt).join("")}
+        <td>${badge(mono)}</td>
+      </tr>`;
+    }).join("");
+    document.getElementById("evalBody").innerHTML=rows||'<tr><td colspan="8" style="color:var(--tx3)">No data</td></tr>';
+  }catch(e){
+    document.getElementById("evalBody").innerHTML='<tr><td colspan="8" style="color:var(--tx3)">Could not load stage data</td></tr>';
+  }
+}
+
+// Also fetch full top-10 from /api/odds for prob bars
+async function enrichProbBars(){
+  try{
+    const r=await fetch("/api/odds");
+    const d=await r.json();
+    if(!d.probs)return;
+    const sorted=Object.entries(d.probs).sort((a,b)=>b[1]-a[1]).slice(0,10);
+    const maxP=sorted[0][1];
+    document.getElementById("probRows").innerHTML=sorted.map(([team,prob],i)=>`
+      <div class="prob-row">
+        <span class="prob-rank">${i+1}</span>
+        <span class="prob-team">${FLAGS[team]||""} ${team}</span>
+        <div class="prob-bar-wrap">
+          <div class="prob-bar-fill ${i<3?"top3":""}" style="width:${(prob/maxP*100).toFixed(1)}%"></div>
+        </div>
+        <span class="prob-pct ${i===0?"gold":""}">${prob.toFixed(1)}%</span>
+      </div>`).join("");
+  }catch(e){}
+}
+
+// Initial fetch + enrich, then every 30s
+fetchAll().then(enrichProbBars);
+setInterval(()=>fetchAll().then(enrichProbBars), 30000);
+</script>
+</body>
+</html>
