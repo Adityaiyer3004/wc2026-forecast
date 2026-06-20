@@ -11,21 +11,51 @@ Routes:
   GET  /health     → Readiness + liveness check
 """
 
+import math
 import os
 import time
 import threading
 import collections
-from flask import Flask, jsonify, send_file, request
+from flask import Flask, jsonify, send_file, request, Response
 from dotenv import load_dotenv
 load_dotenv()
 
 from groq import Groq
+from prometheus_client import (
+    Gauge, Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST,
+    REGISTRY,
+)
+import mlflow
 
 from fetch import fetch_results, fetch_qualifying_results
 from wc2026_sim import run_with_results
 from squad import build_squad_adjustments
 
 app = Flask(__name__)
+
+# ── Prometheus metrics ────────────────────────────────────────────────────────
+_g_prob_sum      = Gauge('wc2026_prob_sum_pct',         'Sum of all win probabilities (%)')
+_g_entropy       = Gauge('wc2026_entropy_bits',         'Shannon entropy of win distribution (bits)')
+_g_match_count   = Gauge('wc2026_match_count',          'Completed WC matches from ESPN')
+_g_fixture_count = Gauge('wc2026_fixture_count',        'Upcoming group fixtures remaining')
+_g_warnings      = Gauge('wc2026_guardrail_warnings',   'Active guardrail warning count')
+_g_cache_age     = Gauge('wc2026_cache_age_seconds',    'Seconds since last simulation run')
+_g_sim_duration  = Gauge('wc2026_sim_duration_seconds', 'Wall-clock time for last simulation (s)')
+_g_team_prob     = Gauge('wc2026_team_win_prob_pct',    'Championship win probability (%)', ['team'])
+
+_c_sim_total     = Counter('wc2026_simulations_total',  'Simulation pipeline completions')
+_c_chat_total    = Counter('wc2026_chat_requests_total','Chat API requests by outcome', ['outcome'])
+_c_score_total   = Counter('wc2026_score_fetches_total','Live score fetch calls by status', ['status'])
+
+_h_chat_latency  = Histogram('wc2026_chat_latency_seconds',
+                              'End-to-end Groq chat latency',
+                              buckets=[.1,.25,.5,1,2,5,10])
+
+# ── MLflow setup ──────────────────────────────────────────────────────────────
+_MLFLOW_URI = os.environ.get("MLFLOW_TRACKING_URI")  # set externally; skip if absent
+if _MLFLOW_URI:
+    mlflow.set_tracking_uri(_MLFLOW_URI)
+    mlflow.set_experiment("wc2026-forecast")
 
 # ── In-memory cache ──────────────────────────────────────────────────────────
 _cache: dict = {
@@ -114,6 +144,7 @@ def _run_simulation() -> None:
     """Full pipeline: fetch → squad → simulate → validate → write cache."""
     global _refreshing
     _refreshing = True
+    _sim_start = time.time()
     try:
         # 1. Live match data
         try:
@@ -192,10 +223,53 @@ def _run_simulation() -> None:
             _cache["updated_at"]  = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
             _cache["ts"]          = time.time()
 
+        sim_duration = round(time.time() - _sim_start, 2)
+
+        # ── Prometheus update ──────────────────────────────────────────────
+        prob_sum = sum(probs.values())
+        entropy  = -sum(p/100 * math.log2(p/100) for p in probs.values() if p > 0)
+        _g_prob_sum.set(round(prob_sum, 2))
+        _g_entropy.set(round(entropy, 3))
+        _g_match_count.set(len(matches))
+        _g_fixture_count.set(len(fixtures))
+        _g_warnings.set(len(warnings))
+        _g_sim_duration.set(sim_duration)
+        _c_sim_total.inc()
+        for team, p in probs.items():
+            _g_team_prob.labels(team=team).set(p)
+
+        # ── MLflow run logging (only if tracking URI configured) ───────────
+        if _MLFLOW_URI:
+            try:
+                with mlflow.start_run(run_name=time.strftime("sim-%Y%m%d-%H%M%S")):
+                    mlflow.log_params({
+                        "n_sims":         n_sims,
+                        "match_count":    len(matches),
+                        "has_squad_adj":  squad_adj is not None,
+                        "has_qualifying": bool(qualifying),
+                    })
+                    mlflow.log_metrics({
+                        "prob_sum_pct":        round(prob_sum, 2),
+                        "entropy_bits":        round(entropy, 3),
+                        "match_count":         len(matches),
+                        "fixture_count":       len(fixtures),
+                        "guardrail_warnings":  len(warnings),
+                        "sim_duration_s":      sim_duration,
+                        "mover_count":         len(shifts),
+                    })
+                    # Top-10 team win probabilities as individual metrics
+                    for team, p in sorted(probs.items(), key=lambda x: -x[1])[:10]:
+                        key = "prob_" + team.lower().replace(" ", "_")
+                        mlflow.log_metric(key, p)
+                    if warnings:
+                        mlflow.set_tags({f"guardrail_{i}": w for i, w in enumerate(warnings)})
+            except Exception as mlf_err:
+                app.logger.warning(f"MLflow logging failed: {mlf_err}")
+
         app.logger.info(
             f"Cache refreshed: {len(matches)} matches, {n_sims:,} sims, "
             f"{len(fixtures)} upcoming fixtures, {len(shifts)} movers, "
-            f"{len(warnings)} guardrail warnings"
+            f"{len(warnings)} guardrail warnings, {sim_duration}s"
         )
 
     finally:
@@ -340,6 +414,7 @@ def api_chat():
     # ── LLM guardrails ──────────────────────────────────────────────────────
     ip = request.headers.get("X-Forwarded-For", request.remote_addr or "unknown").split(",")[0].strip()
     if not _check_rate_limit(ip):
+        _c_chat_total.labels(outcome="rate_limited").inc()
         return jsonify({"error": "Too many requests — please wait before sending more messages."}), 429
 
     body     = request.get_json(silent=True) or {}
@@ -347,10 +422,13 @@ def api_chat():
     history  = body.get("history") or []
 
     if not user_msg:
+        _c_chat_total.labels(outcome="empty").inc()
         return jsonify({"error": "Empty message"}), 400
     if len(user_msg) > CHAT_MAX_INPUT:
+        _c_chat_total.labels(outcome="too_long").inc()
         return jsonify({"error": f"Message too long (max {CHAT_MAX_INPUT} characters)"}), 400
     if _is_jailbreak(user_msg):
+        _c_chat_total.labels(outcome="jailbreak").inc()
         return jsonify({"error": "I can only answer questions about the WC 2026 forecast."}), 400
 
     with _lock:
@@ -410,6 +488,7 @@ STRICT RULES:
     messages.append({"role": "user", "content": user_msg})
 
     try:
+        _t0 = time.time()
         client = Groq(api_key=groq_key)
         resp   = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
@@ -417,17 +496,48 @@ STRICT RULES:
             max_tokens=300,
             temperature=0.6,
         )
+        latency = time.time() - _t0
+        _h_chat_latency.observe(latency)
+
         reply = resp.choices[0].message.content.strip()
 
-        # Output guardrail: reject suspiciously short or empty replies
         if len(reply) < 10:
             app.logger.warning(f"LLM returned suspiciously short reply: {repr(reply)}")
+            _c_chat_total.labels(outcome="empty_reply").inc()
             return jsonify({"error": "Model returned an empty response, please try again."}), 500
 
+        _c_chat_total.labels(outcome="success").inc()
         return jsonify({"reply": reply})
     except Exception as e:
         app.logger.error(f"Groq chat error: {e}")
+        _c_chat_total.labels(outcome="error").inc()
         return jsonify({"error": "Chat failed, try again"}), 500
+
+
+@app.route("/metrics")
+def prometheus_metrics():
+    """Prometheus scrape endpoint — compatible with Grafana Cloud."""
+    with _lock:
+        ts = _cache.get("ts", 0)
+    if ts:
+        _g_cache_age.set(round(time.time() - ts, 1))
+    return Response(generate_latest(REGISTRY), mimetype=CONTENT_TYPE_LATEST)
+
+
+@app.route("/mlflow")
+def mlflow_ui_redirect():
+    """Info page — MLflow UI runs separately, this just explains the setup."""
+    return jsonify({
+        "message": "MLflow tracking is logged to MLFLOW_TRACKING_URI env var.",
+        "run_locally": "mlflow ui --backend-store-uri $MLFLOW_TRACKING_URI",
+        "tracking_uri": _MLFLOW_URI or "not configured (set MLFLOW_TRACKING_URI)",
+        "experiment": "wc2026-forecast",
+        "metrics_logged": [
+            "prob_sum_pct", "entropy_bits", "match_count", "fixture_count",
+            "guardrail_warnings", "sim_duration_s", "mover_count",
+            "prob_argentina", "prob_france", "prob_spain", "... (top 10 teams)",
+        ],
+    })
 
 
 @app.route("/health")
