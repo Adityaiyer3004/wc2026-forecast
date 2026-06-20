@@ -11,9 +11,11 @@ Routes:
 import os
 import time
 import threading
-from flask import Flask, jsonify, send_file, abort
+from flask import Flask, jsonify, send_file, request, abort
 from dotenv import load_dotenv
 load_dotenv()
+
+from groq import Groq
 
 from fetch import fetch_results, fetch_qualifying_results
 from wc2026_sim import run_with_results
@@ -159,6 +161,91 @@ def refresh():
     with _lock:
         return jsonify({"ok": True, "updated_at": _cache["updated_at"],
                         "match_count": len(_cache["matches"])})
+
+
+@app.route("/api/chat", methods=["POST"])
+def api_chat():
+    groq_key = os.environ.get("GROQ_API_KEY")
+    if not groq_key:
+        return jsonify({"error": "Chat unavailable — GROQ_API_KEY not set"}), 503
+
+    body = request.get_json(silent=True) or {}
+    user_msg = (body.get("message") or "").strip()
+    history  = body.get("history") or []   # list of {role, content}
+    if not user_msg:
+        return jsonify({"error": "Empty message"}), 400
+
+    with _lock:
+        probs       = _cache.get("probs") or {}
+        stage_probs = _cache.get("stage_probs") or {}
+        fixtures    = _cache.get("fixtures") or []
+        shifts      = _cache.get("shifts") or []
+        matches     = _cache.get("matches") or []
+        updated_at  = _cache.get("updated_at") or "unknown"
+
+    # Build a compact forecast summary for the system prompt
+    top10 = sorted(probs.items(), key=lambda x: -x[1])[:10]
+    top10_str = "\n".join(f"  {t}: {p:.1f}%" for t, p in top10)
+
+    recent = matches[-8:] if matches else []
+    results_str = "\n".join(
+        f"  {m['home']} {m['home_goals']}-{m['away_goals']} {m['away']}"
+        for m in recent
+    ) or "  (none yet)"
+
+    fixtures_str = "\n".join(
+        f"  {f['home']} vs {f['away']} (Group {f['group']}): "
+        f"W {f['home_win']*100:.0f}% / D {f['draw']*100:.0f}% / L {f['away_win']*100:.0f}%"
+        for f in (fixtures or [])[:8]
+    ) or "  (none)"
+
+    shifts_str = "\n".join(
+        f"  {s['team']}: {s['prev']:.1f}% → {s['curr']:.1f}% ({'+' if s['delta']>0 else ''}{s['delta']:.1f}pp)"
+        for s in (shifts or [])[:5]
+    ) or "  (none)"
+
+    system = f"""You are a football analyst assistant for the WC 2026 Forecast dashboard.
+You have access to live Monte Carlo simulation data (50,000 simulations, 5-layer Bayesian model).
+Today's date: 2026-06-20. Last updated: {updated_at}.
+
+TOP 10 CHAMPIONSHIP WIN PROBABILITIES:
+{top10_str}
+
+RECENT MATCH RESULTS (last 8):
+{results_str}
+
+UPCOMING FIXTURES (model predictions):
+{fixtures_str}
+
+NOTABLE ODDS SHIFTS SINCE LAST RUN:
+{shifts_str}
+
+Answer questions about the tournament, probabilities, and model predictions.
+Be concise (2-4 sentences max unless asked for detail). Use the data above.
+If asked about a team not in the top 10, you can still discuss them based on general knowledge.
+Never make up specific probabilities you don't have — say "I don't have that breakdown" instead."""
+
+    messages = []
+    for h in history[-6:]:   # keep last 6 turns for context
+        role = h.get("role")
+        content = h.get("content", "")
+        if role in ("user", "assistant") and content:
+            messages.append({"role": role, "content": content})
+    messages.append({"role": "user", "content": user_msg})
+
+    try:
+        client = Groq(api_key=groq_key)
+        resp = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "system", "content": system}] + messages,
+            max_tokens=300,
+            temperature=0.6,
+        )
+        reply = resp.choices[0].message.content.strip()
+        return jsonify({"reply": reply})
+    except Exception as e:
+        app.logger.error(f"Groq chat error: {e}")
+        return jsonify({"error": "Chat failed, try again"}), 500
 
 
 @app.route("/health")
