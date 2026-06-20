@@ -8,9 +8,9 @@ which feeds it live ESPN data.
 """
 
 import numpy as np
+import copy
 from collections import defaultdict
 from itertools import combinations
-import copy
 
 BASE = 1.35  # avg international goals per team per 90 mins
 
@@ -229,6 +229,7 @@ def run_with_results(
     seed: int = 2026,
     squad_adjustments: dict[str, float] | None = None,
     use_live_ratings: bool = True,
+    qualifying_matches: list | None = None,
 ) -> dict[str, float]:
     """
     Core simulation. Returns {team: win_probability} dict.
@@ -243,13 +244,25 @@ def run_with_results(
     # Layer 1: start from live Elo ratings (falls back to hardcoded if unavailable)
     if use_live_ratings:
         try:
-            from ratings import apply_elo_ratings
+            from ratings import apply_elo_ratings, fetch_elo_ratings
             base_teams = apply_elo_ratings(TEAMS)
+            # Build extended dict with ALL Elo-rated teams for qualifying calibration
+            all_elo = fetch_elo_ratings()
+            all_teams_extended = {
+                team: {"atk": r["atk"], "def": r["def"], "group": TEAMS.get(team, {}).get("group", "?")}
+                for team, r in all_elo.items()
+            }
+            # Merge — WC 48 get their groups; extras get "?"
+            for team, info in TEAMS.items():
+                if team not in all_teams_extended:
+                    all_teams_extended[team] = copy.deepcopy(info)
         except Exception as e:
             print(f"[sim] Elo fetch failed ({e}), using hardcoded ratings")
             base_teams = TEAMS
+            all_teams_extended = TEAMS
     else:
         base_teams = TEAMS
+        all_teams_extended = TEAMS
 
     # Layer 2: squad/form/manager multipliers from squad.py
     if squad_adjustments:
@@ -261,6 +274,19 @@ def run_with_results(
                 # Better squads also defend marginally better
                 base_teams[team]["def"] = round(base_teams[team]["def"] / (1 + (mult - 1) * 0.4), 4)
 
+    # Layer 3: qualifying results (lr=0.04, half of WC lr)
+    # Uses extended team dict so e.g. Argentina vs Bolivia updates Argentina's rating
+    if qualifying_matches:
+        qual_updated_extended = bayesian_update(
+            all_teams_extended, qualifying_matches, lr=0.04
+        )
+        # Copy updated ratings back into base_teams (WC 48 only)
+        for team in base_teams:
+            if team in qual_updated_extended:
+                base_teams[team]["atk"] = qual_updated_extended[team]["atk"]
+                base_teams[team]["def"] = qual_updated_extended[team]["def"]
+
+    # Layer 4: WC 2026 matches (lr=0.08, full weight)
     updated = bayesian_update(base_teams, matches)
 
     group_played: dict[str, list] = defaultdict(list)  # type: ignore[assignment]

@@ -15,7 +15,7 @@ from flask import Flask, jsonify, send_file, abort
 from dotenv import load_dotenv
 load_dotenv()
 
-from fetch import fetch_results
+from fetch import fetch_results, fetch_qualifying_results
 from wc2026_sim import run_with_results
 from squad import build_squad_adjustments
 
@@ -49,9 +49,19 @@ def _run_simulation() -> None:
             app.logger.warning(f"Squad layer failed: {e}. Skipping.")
             squad_adj = None
 
-        # 3. Monte Carlo (50k for scheduled runs, tunable via env var)
+        # 3. Qualifying results (7-day cache)
+        try:
+            qualifying = fetch_qualifying_results()
+        except Exception as e:
+            app.logger.warning(f"Qualifying fetch failed: {e}")
+            qualifying = []
+
+        # 4. Monte Carlo (50k for scheduled runs, tunable via env var)
         n_sims = int(os.environ.get("N_SIMS", "50000"))
-        raw_probs = run_with_results(matches, n=n_sims, squad_adjustments=squad_adj)
+        raw_probs = run_with_results(
+            matches, n=n_sims, squad_adjustments=squad_adj,
+            qualifying_matches=qualifying or None,
+        )
 
         probs = {t: round(p * 100, 2) for t, p in raw_probs.items() if p >= 0.001}
         match_list = [

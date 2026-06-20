@@ -16,7 +16,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-from fetch import fetch_results
+from fetch import fetch_results, fetch_qualifying_results
 from wc2026_sim import TEAMS, run_with_results
 from squad import build_squad_adjustments
 
@@ -86,7 +86,17 @@ def main() -> None:
         print(f"FAILED: {e} — skipping squad layer")
         squad_adj = None
 
-    # 3. Optional baseline (pre-tournament priors, no results)
+    # 3. Qualifying results (7-day cache, ~700 matches across 6 confederations)
+    print(f"\n[3/5] Fetching qualifying results...", end=" ", flush=True)
+    t0 = time.time()
+    try:
+        qualifying = fetch_qualifying_results()
+        print(f"OK — {len(qualifying)} matches ({time.time()-t0:.1f}s)")
+    except Exception as e:
+        print(f"FAILED: {e}")
+        qualifying = []
+
+    # 4. Optional baseline (pre-tournament priors, no results)
     baseline_probs = None
     if show_delta or matches is None:
         print(f"\n[3/4] Computing baseline (pre-tournament priors, {n:,} sims)...", end=" ", flush=True)
@@ -96,11 +106,15 @@ def main() -> None:
     else:
         print(f"\n[3/4] Baseline skipped (use --delta to include)")
 
-    # 4. Live model
+    # 5. Live model
     effective_matches = matches if matches is not None else []
-    print(f"\n[4/4] Running model with {len(effective_matches)} results ({n:,} sims)...", end=" ", flush=True)
+    print(f"\n[5/5] Running model: {len(qualifying)} qual + {len(effective_matches)} WC matches ({n:,} sims)...", end=" ", flush=True)
     t0 = time.time()
-    live_probs = run_with_results(effective_matches, n=n, seed=2026, squad_adjustments=squad_adj)
+    live_probs = run_with_results(
+        effective_matches, n=n, seed=2026,
+        squad_adjustments=squad_adj,
+        qualifying_matches=qualifying or None,
+    )
     print(f"done ({time.time()-t0:.1f}s)")
 
     # 4. Display
