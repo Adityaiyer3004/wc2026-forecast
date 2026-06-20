@@ -196,7 +196,11 @@ def sim_group(group_teams: list, teams: dict, played: list) -> tuple[list, dict,
     return standings, pts, gd
 
 
-def sim_tournament_once(teams: dict, group_played: dict) -> str:
+def sim_tournament_once(teams: dict, group_played: dict) -> tuple[str, dict[str, int]]:
+    """
+    Returns (winner, stage_map) where stage_map[team] is the highest round reached:
+      0=group exit  1=R32 entry  2=R16  3=QF  4=SF  5=Final  6=Champion
+    """
     qualifiers = []
     all_third = []
 
@@ -211,16 +215,59 @@ def sim_tournament_once(teams: dict, group_played: dict) -> str:
     all_third.sort(key=lambda x: (x[0], x[1]), reverse=True)
     qualifiers.extend(t[2] for t in all_third[:8])
 
-    # 32-team knockout (5 rounds)
+    # Stage tracking
+    stage: dict[str, int] = {t: 0 for t in TEAMS}
+    for t in qualifiers:
+        if t in stage:
+            stage[t] = 1  # reached R32
+
+    # 32-team knockout (5 rounds); each win increments the stage
     bracket = list(qualifiers)
     np.random.shuffle(bracket)
+    round_num = 2  # winning R32 → stage 2 (R16), etc.
     while len(bracket) > 1:
         next_rd = []
         for i in range(0, len(bracket), 2):
-            next_rd.append(knockout_winner(bracket[i], bracket[i + 1], teams))
+            winner = knockout_winner(bracket[i], bracket[i + 1], teams)
+            if winner in stage:
+                stage[winner] = round_num
+            next_rd.append(winner)
         bracket = next_rd
+        round_num += 1
 
-    return bracket[0]
+    return bracket[0], stage
+
+
+def predict_fixtures(teams: dict, group_played: dict, n: int = 2000) -> list[dict]:
+    """W/D/L probabilities for all remaining group-stage fixtures (vectorised)."""
+    np.random.seed(42)
+    fixtures = []
+    for grp in sorted(GROUPS.keys()):
+        group_teams = GROUPS[grp]
+        played_pairs: set = set()
+        for m in group_played.get(grp, []):
+            h = m["home"] if isinstance(m, dict) else m[0]
+            a = m["away"] if isinstance(m, dict) else m[1]
+            played_pairs.add(frozenset([h, a]))
+
+        for t1, t2 in combinations(group_teams, 2):
+            if frozenset([t1, t2]) in played_pairs:
+                continue
+            if t1 not in teams or t2 not in teams:
+                continue
+            t1_host = t1 in HOME_ADVANTAGE_TEAMS
+            mu_h, mu_a = _xg(t1, t2, teams, t1_host)
+            g1s = np.random.poisson(mu_h, n)
+            g2s = np.random.poisson(mu_a, n)
+            fixtures.append({
+                "home": t1, "away": t2, "group": grp,
+                "home_win": round(float((g1s > g2s).mean()), 3),
+                "draw":     round(float((g1s == g2s).mean()), 3),
+                "away_win": round(float((g1s < g2s).mean()), 3),
+                "home_xg":  round(mu_h, 2),
+                "away_xg":  round(mu_a, 2),
+            })
+    return fixtures
 
 
 def run_with_results(
@@ -230,7 +277,8 @@ def run_with_results(
     squad_adjustments: dict[str, float] | None = None,
     use_live_ratings: bool = True,
     qualifying_matches: list | None = None,
-) -> dict[str, float]:
+    return_stages: bool = False,
+) -> "dict[str, float] | dict":
     """
     Core simulation. Returns {team: win_probability} dict.
 
@@ -296,11 +344,39 @@ def run_with_results(
             grp = TEAMS[home]["group"]
             group_played[grp].append(m)
 
-    wins: dict[str, int] = defaultdict(int)
-    for _ in range(n):
-        wins[sim_tournament_once(updated, group_played)] += 1
+    _STAGE_KEYS  = ("r32", "r16", "qf", "sf", "final", "win")
+    _STAGE_THRES = (1, 2, 3, 4, 5, 6)
 
-    return {t: wins[t] / n for t in TEAMS}
+    wins: dict[str, int] = defaultdict(int)
+    stage_hits: dict[str, list] = {t: [0] * 6 for t in TEAMS}
+
+    for _ in range(n):
+        winner, stages = sim_tournament_once(updated, group_played)
+        wins[winner] += 1
+        for t, r in stages.items():
+            if t in stage_hits and r > 0:
+                h = stage_hits[t]
+                if r >= 1: h[0] += 1
+                if r >= 2: h[1] += 1
+                if r >= 3: h[2] += 1
+                if r >= 4: h[3] += 1
+                if r >= 5: h[4] += 1
+                if r >= 6: h[5] += 1
+
+    win_probs = {t: wins[t] / n for t in TEAMS}
+
+    if not return_stages:
+        return win_probs
+
+    stage_probs = {
+        t: {_STAGE_KEYS[i]: stage_hits[t][i] / n for i in range(6)}
+        for t in TEAMS
+    }
+    return {
+        "win":         win_probs,
+        "stage_probs": stage_probs,
+        "fixtures":    predict_fixtures(updated, group_played),
+    }
 
 
 def run(n: int = 50_000) -> dict[str, float]:
