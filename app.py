@@ -12,6 +12,8 @@ import os
 import time
 import threading
 from flask import Flask, jsonify, send_file, abort
+from dotenv import load_dotenv
+load_dotenv()
 
 from fetch import fetch_results
 from wc2026_sim import run_with_results

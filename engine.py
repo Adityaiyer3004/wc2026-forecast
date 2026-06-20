@@ -13,6 +13,9 @@ import sys
 import time
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
 from fetch import fetch_results
 from wc2026_sim import TEAMS, run_with_results
 from squad import build_squad_adjustments
