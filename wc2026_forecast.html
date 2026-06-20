@@ -161,19 +161,19 @@
     </div>
     <div class="meta-chip">
       <div class="label">Matches factored in</div>
-      <div class="value">29 of 72</div>
+      <div class="value" id="matchCount">—</div>
     </div>
     <div class="meta-chip">
-      <div class="label">Data as of</div>
-      <div class="value">June 20, 2026</div>
+      <div class="label">Last updated</div>
+      <div class="value" id="lastUpdated">—</div>
     </div>
   </div>
 
   <div class="card top-3">
     <h2>Championship Probability</h2>
     <div id="teamList"></div>
-    <button class="btn" id="rerunBtn" onclick="rerunSims()">Re-run 20,000 Simulations</button>
-    <div class="sim-count" id="simNote">Results from 50,000 Python simulations (seeded from real match data)</div>
+    <button class="btn" id="rerunBtn" onclick="rerunSims()">Re-run 20,000 Browser Simulations</button>
+    <div class="sim-count" id="simNote">Loading latest probabilities from server…</div>
   </div>
 
   <div class="card">
@@ -439,31 +439,17 @@ function simTournamentOnce(teams) {
   return round[0];
 }
 
-// ─── INITIAL DATA (from 50k Python run) ─────────────────────────────────────
+// ─── FALLBACK DATA (used if API is unavailable) ──────────────────────────────
 
 const INITIAL_PROBS = {
-  "Argentina":    16.2,
-  "France":       11.4,
-  "Spain":         9.8,
-  "Germany":       9.7,
-  "England":       7.9,
-  "Brazil":        5.4,
-  "USA":           5.3,
-  "Canada":        5.3,
-  "Portugal":      4.8,
-  "Mexico":        4.0,
-  "Netherlands":   2.8,
-  "Sweden":        2.4,
-  "Norway":        2.3,
-  "Belgium":       1.9,
-  "Switzerland":   1.6,
-  "Colombia":      1.5,
-  "Morocco":       1.5,
-  "Austria":       1.2,
-  "Ivory Coast":   1.0,
-  "Japan":         0.9,
-  "Uruguay":       0.7,
+  "Argentina": 19.0, "France": 14.3, "Spain": 11.1, "England": 8.6,
+  "Germany": 7.8, "Brazil": 7.3, "Portugal": 7.3, "Netherlands": 3.4,
+  "Morocco": 2.2, "Mexico": 1.9, "Belgium": 1.9, "USA": 1.8,
+  "Sweden": 1.6, "Colombia": 1.5, "Norway": 1.5, "Switzerland": 1.4,
+  "Croatia": 1.2, "Canada": 1.1, "Austria": 0.9, "Japan": 0.8,
 };
+
+let _apiMatches = null;
 
 // ─── UI ─────────────────────────────────────────────────────────────────────
 
@@ -493,13 +479,14 @@ function renderTeams(probs) {
   `).join("");
 }
 
-function renderResults() {
+function renderResults(matchList) {
   const list = document.getElementById("resultsList");
-  list.innerHTML = RESULTS.map(([h, a, gh, ga]) => `
+  const source = matchList || RESULTS.map(([h, a, gh, ga]) => ({home: h, away: a, home_goals: gh, away_goals: ga}));
+  list.innerHTML = source.map(m => `
     <div class="result-item">
-      <span class="result-score">${gh}–${ga}</span>
-      <span class="result-teams">${h} vs ${a}</span>
-      <span class="result-group">${TEAMS[h].group}</span>
+      <span class="result-score">${m.home_goals ?? m[2]}–${m.away_goals ?? m[3]}</span>
+      <span class="result-teams">${m.home ?? m[0]} vs ${m.away ?? m[1]}</span>
+      <span class="result-group">${TEAMS[m.home ?? m[0]]?.group || ""}</span>
     </div>
   `).join("");
 }
@@ -531,10 +518,40 @@ function rerunSims() {
   }, 50);
 }
 
+// ─── API FETCH ───────────────────────────────────────────────────────────────
+
+async function loadFromAPI() {
+  try {
+    const resp = await fetch("/api/odds");
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+
+    renderTeams(data.probs);
+    renderResults(data.matches);
+    _apiMatches = data.matches;
+
+    document.getElementById("matchCount").textContent = `${data.match_count} of 72`;
+    if (data.updated_at) {
+      const d = new Date(data.updated_at);
+      document.getElementById("lastUpdated").textContent =
+        d.toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+    }
+    document.getElementById("simNote").textContent =
+      `Server: 50,000 Python simulations · Bayesian-updated · Squad-adjusted`;
+  } catch (e) {
+    console.warn("API unavailable, using fallback data:", e);
+    renderTeams(INITIAL_PROBS);
+    renderResults();
+    document.getElementById("matchCount").textContent = "30 of 72";
+    document.getElementById("lastUpdated").textContent = "Jun 20, 2026";
+    document.getElementById("simNote").textContent =
+      "Fallback: pre-computed probabilities (server unavailable)";
+  }
+}
+
 // ─── INIT ───────────────────────────────────────────────────────────────────
 
-renderTeams(INITIAL_PROBS);
-renderResults();
+loadFromAPI();
 </script>
 </body>
 </html>

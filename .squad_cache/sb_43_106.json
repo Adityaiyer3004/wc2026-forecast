@@ -1,0 +1,2658 @@
+{
+  "Canada": {
+    "Mark Anthony Kaye": {
+      "xg": 0.038882375,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Tajon Buchanan": {
+      "xg": 0.714270153,
+      "goals": 0,
+      "shots": 5,
+      "matches": 3
+    },
+    "Alphonso Davies": {
+      "xg": 0.9286888979999999,
+      "goals": 1,
+      "shots": 4,
+      "matches": 3
+    },
+    "Atiba Hutchinson": {
+      "xg": 0.133220574,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Alistair Johnston": {
+      "xg": 0.672354974,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Stephen Antunes Eust\u00e1quio": {
+      "xg": 0.164512644,
+      "goals": 0,
+      "shots": 3,
+      "matches": 1
+    },
+    "Jonathan David": {
+      "xg": 0.812813505,
+      "goals": 0,
+      "shots": 8,
+      "matches": 2
+    },
+    "Richie Laryea": {
+      "xg": 0.056640564,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "David Junior Hoilett": {
+      "xg": 0.11914880800000001,
+      "goals": 0,
+      "shots": 4,
+      "matches": 2
+    },
+    "Cyle Larin": {
+      "xg": 0.24979668400000002,
+      "goals": 0,
+      "shots": 3,
+      "matches": 1
+    },
+    "Jonathan Osorio": {
+      "xg": 0.03829635,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Morocco": {
+    "Hakim Ziyech": {
+      "xg": 1.095816526,
+      "goals": 2,
+      "shots": 11,
+      "matches": 7
+    },
+    "Abdelhamid Sabiri": {
+      "xg": 0.9068839989999999,
+      "goals": 1,
+      "shots": 4,
+      "matches": 2
+    },
+    "Sofiane Boufal": {
+      "xg": 0.31647402999999996,
+      "goals": 0,
+      "shots": 7,
+      "matches": 6
+    },
+    "Youssef En-Nesyri": {
+      "xg": 1.045874203,
+      "goals": 2,
+      "shots": 11,
+      "matches": 4
+    },
+    "Noussair Mazraoui": {
+      "xg": 0.151342469,
+      "goals": 0,
+      "shots": 4,
+      "matches": 3
+    },
+    "Achraf Hakimi Mouh": {
+      "xg": 0.919596872,
+      "goals": 1,
+      "shots": 5,
+      "matches": 4
+    },
+    "Achraf Dari": {
+      "xg": 0.4178385,
+      "goals": 1,
+      "shots": 1,
+      "matches": 1
+    },
+    "Selim Amallah": {
+      "xg": 0.11463773599999999,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Yahia Attiyat allah": {
+      "xg": 0.331586645,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Azzedine Ounahi": {
+      "xg": 0.244700479,
+      "goals": 0,
+      "shots": 6,
+      "matches": 3
+    },
+    "Zakaria Aboukhlal": {
+      "xg": 0.5970794660000001,
+      "goals": 1,
+      "shots": 3,
+      "matches": 3
+    },
+    "Jawad El Yamiq": {
+      "xg": 0.06408756,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Sofyan Amrabat": {
+      "xg": 0.020691318,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Abdessamad Ezzalzouli": {
+      "xg": 0.05950738,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Abderrazak Hamdallah": {
+      "xg": 0.542996504,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Nayef Aguerd": {
+      "xg": 0.25141555,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Walid Cheddira": {
+      "xg": 0.249388745,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Badr Banoun": {
+      "xg": 0.7835,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Romain Sa\u00efss": {
+      "xg": 0.56495196,
+      "goals": 1,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "England": {
+    "Harry Maguire": {
+      "xg": 0.48995566300000004,
+      "goals": 0,
+      "shots": 6,
+      "matches": 4
+    },
+    "Bukayo Saka": {
+      "xg": 0.579455465,
+      "goals": 3,
+      "shots": 7,
+      "matches": 4
+    },
+    "Mason Mount": {
+      "xg": 0.18183271299999998,
+      "goals": 0,
+      "shots": 4,
+      "matches": 3
+    },
+    "Jude Bellingham": {
+      "xg": 0.8412563740000001,
+      "goals": 1,
+      "shots": 5,
+      "matches": 3
+    },
+    "Raheem Sterling": {
+      "xg": 0.1885282,
+      "goals": 1,
+      "shots": 1,
+      "matches": 1
+    },
+    "Kieran Trippier": {
+      "xg": 0.042866398,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Luke Shaw": {
+      "xg": 0.084394449,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Marcus Rashford": {
+      "xg": 1.3825857950000002,
+      "goals": 3,
+      "shots": 11,
+      "matches": 5
+    },
+    "Jack Grealish": {
+      "xg": 0.6262809,
+      "goals": 1,
+      "shots": 1,
+      "matches": 1
+    },
+    "Harry Kane": {
+      "xg": 2.330979943,
+      "goals": 2,
+      "shots": 12,
+      "matches": 4
+    },
+    "John Stones": {
+      "xg": 0.587418711,
+      "goals": 0,
+      "shots": 4,
+      "matches": 3
+    },
+    "Phil Foden": {
+      "xg": 1.22865907,
+      "goals": 1,
+      "shots": 5,
+      "matches": 1
+    },
+    "Jordan Brian Henderson": {
+      "xg": 0.148950994,
+      "goals": 1,
+      "shots": 2,
+      "matches": 2
+    },
+    "Philip Foden": {
+      "xg": 0.022691524,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Iran": {
+    "Alireza Jahanbakhsh": {
+      "xg": 0.154904189,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Saeid Ezatolahi Afagh": {
+      "xg": 0.0612828607,
+      "goals": 0,
+      "shots": 3,
+      "matches": 3
+    },
+    "Mehdi Taremi": {
+      "xg": 1.3781437200000002,
+      "goals": 2,
+      "shots": 6,
+      "matches": 3
+    },
+    "Mehdi Torabi": {
+      "xg": 0.09684943,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Ahmad Nourollahi": {
+      "xg": 0.0804267816,
+      "goals": 0,
+      "shots": 5,
+      "matches": 2
+    },
+    "Sardar Azmoun": {
+      "xg": 0.960581323,
+      "goals": 0,
+      "shots": 5,
+      "matches": 2
+    },
+    "Saman Ghoddos": {
+      "xg": 0.39133456,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Morteza Pouraliganji": {
+      "xg": 0.26883789,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Ali Gholizadeh": {
+      "xg": 0.04282673,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Ehsan Hajsafi": {
+      "xg": 0.068153165,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Karim Ansarifard": {
+      "xg": 0.06399969,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Ramin Rezaeian": {
+      "xg": 0.230377999,
+      "goals": 1,
+      "shots": 2,
+      "matches": 1
+    },
+    "Roozbeh Cheshmi": {
+      "xg": 0.03268815,
+      "goals": 1,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Croatia": {
+    "Ivan Peri\u0161i\u0107": {
+      "xg": 0.7556302263000001,
+      "goals": 1,
+      "shots": 16,
+      "matches": 6
+    },
+    "Marcelo Brozovi\u0107": {
+      "xg": 1.3688188929999998,
+      "goals": 1,
+      "shots": 5,
+      "matches": 4
+    },
+    "Marko Livaja": {
+      "xg": 1.7739847910000002,
+      "goals": 1,
+      "shots": 7,
+      "matches": 4
+    },
+    "Borna Sosa": {
+      "xg": 0.048374664,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Josip Juranovi\u0107": {
+      "xg": 0.041306578,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Mateo Kova\u010di\u0107": {
+      "xg": 0.34514702,
+      "goals": 0,
+      "shots": 3,
+      "matches": 3
+    },
+    "Luka Modri\u0107": {
+      "xg": 1.12735736,
+      "goals": 1,
+      "shots": 7,
+      "matches": 6
+    },
+    "Nikola Vla\u0161i\u0107": {
+      "xg": 2.195553433,
+      "goals": 2,
+      "shots": 7,
+      "matches": 5
+    },
+    "Dejan Lovren": {
+      "xg": 0.381529793,
+      "goals": 0,
+      "shots": 4,
+      "matches": 2
+    },
+    "Jo\u0161ko Gvardiol": {
+      "xg": 0.186105118,
+      "goals": 1,
+      "shots": 2,
+      "matches": 2
+    },
+    "Mislav Or\u0161i\u0107": {
+      "xg": 1.0595709986,
+      "goals": 2,
+      "shots": 10,
+      "matches": 5
+    },
+    "Josip Stani\u0161i\u0107": {
+      "xg": 0.040524755,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Andrej Kramari\u0107": {
+      "xg": 1.087257213,
+      "goals": 2,
+      "shots": 10,
+      "matches": 4
+    },
+    "Mario Pa\u0161ali\u0107": {
+      "xg": 0.9502076909999999,
+      "goals": 1,
+      "shots": 4,
+      "matches": 2
+    },
+    "Lovro Majer": {
+      "xg": 1.5922397369999999,
+      "goals": 2,
+      "shots": 5,
+      "matches": 4
+    },
+    "Bruno Petkovi\u0107": {
+      "xg": 0.09977819,
+      "goals": 1,
+      "shots": 1,
+      "matches": 1
+    },
+    "Ante Budimir": {
+      "xg": 0.10111922,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Borna Bari\u0161i\u0107": {
+      "xg": 0.015196718,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Belgium": {
+    "Yannick Ferreira Carrasco": {
+      "xg": 0.202310031,
+      "goals": 0,
+      "shots": 4,
+      "matches": 1
+    },
+    "Dries Mertens": {
+      "xg": 0.367153732,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Axel Witsel": {
+      "xg": 0.025340356,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Romelu Lukaku Menama": {
+      "xg": 1.68415473,
+      "goals": 0,
+      "shots": 5,
+      "matches": 1
+    },
+    "Kevin De Bruyne": {
+      "xg": 0.1779663248,
+      "goals": 0,
+      "shots": 7,
+      "matches": 3
+    },
+    "Jan Vertonghen": {
+      "xg": 0.10772621,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Thomas Meunier": {
+      "xg": 0.11919592400000001,
+      "goals": 0,
+      "shots": 3,
+      "matches": 3
+    },
+    "Michy Batshuayi Tunga": {
+      "xg": 0.620673121,
+      "goals": 1,
+      "shots": 6,
+      "matches": 2
+    },
+    "Leander Dendoncker": {
+      "xg": 0.08894938,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Amadou Onana": {
+      "xg": 0.29186468,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Eden Hazard": {
+      "xg": 0.009158539,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Netherlands": {
+    "Cody Math\u00e8s Gakpo": {
+      "xg": 0.562367031,
+      "goals": 3,
+      "shots": 5,
+      "matches": 4
+    },
+    "Teun Koopmeiners": {
+      "xg": 0.87343067,
+      "goals": 1,
+      "shots": 3,
+      "matches": 3
+    },
+    "Vincent Janssen": {
+      "xg": 0.15551722,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Daley Blind": {
+      "xg": 0.521673045,
+      "goals": 1,
+      "shots": 5,
+      "matches": 3
+    },
+    "Virgil van Dijk": {
+      "xg": 0.977948796,
+      "goals": 0,
+      "shots": 4,
+      "matches": 3
+    },
+    "Steven Berghuis": {
+      "xg": 0.975530951,
+      "goals": 0,
+      "shots": 6,
+      "matches": 3
+    },
+    "Memphis Depay": {
+      "xg": 1.181855992,
+      "goals": 1,
+      "shots": 10,
+      "matches": 3
+    },
+    "Davy Klaassen": {
+      "xg": 0.43179539,
+      "goals": 1,
+      "shots": 2,
+      "matches": 2
+    },
+    "Frenkie de Jong": {
+      "xg": 0.720993446,
+      "goals": 1,
+      "shots": 2,
+      "matches": 1
+    },
+    "Steven Bergwijn": {
+      "xg": 0.33993796000000004,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Wout Weghorst": {
+      "xg": 1.050509997,
+      "goals": 3,
+      "shots": 3,
+      "matches": 1
+    },
+    "Denzel Dumfries": {
+      "xg": 0.283319202,
+      "goals": 1,
+      "shots": 2,
+      "matches": 2
+    },
+    "Luuk de Jong": {
+      "xg": 0.8364073399999999,
+      "goals": 1,
+      "shots": 2,
+      "matches": 1
+    }
+  },
+  "Ecuador": {
+    "Enner Remberto Valencia Lastra": {
+      "xg": 1.924592276,
+      "goals": 3,
+      "shots": 9,
+      "matches": 3
+    },
+    "Mois\u00e9s Isaac Caicedo Corozo": {
+      "xg": 0.653325549,
+      "goals": 1,
+      "shots": 3,
+      "matches": 2
+    },
+    "Michael Steveen Estrada Mart\u00ednez": {
+      "xg": 0.246376532,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Angelo Smit Preciado Qui\u00f1\u00f3nez": {
+      "xg": 0.0708458504,
+      "goals": 0,
+      "shots": 4,
+      "matches": 2
+    },
+    "Pervis Josu\u00e9 Estupi\u00f1\u00e1n Tenorio": {
+      "xg": 0.27007267,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Gonzalo Jordy Plata Jim\u00e9nez": {
+      "xg": 0.105323937,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Jos\u00e9 Adoni Cifuentes Charcopa": {
+      "xg": 0.025271386,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Felix Eduardo Torres Caicedo": {
+      "xg": 0.15397952,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Jeremy Leonel Sarmiento Morante": {
+      "xg": 0.02928531,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Jackson Gabriel Porozo Vernaza": {
+      "xg": 0.052534856,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Romario Andr\u00e9s Ibarra Mina": {
+      "xg": 0.136638454,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Kevin Jos\u00e9 Rodr\u00edguez Cortez": {
+      "xg": 0.13848205,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Spain": {
+    "Sergio Busquets i Burgos": {
+      "xg": 0.88711582,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "\u00c1lvaro Borja Morata Mart\u00edn": {
+      "xg": 1.1094806780000002,
+      "goals": 3,
+      "shots": 8,
+      "matches": 4
+    },
+    "Daniel Olmo Carvajal": {
+      "xg": 1.0841161047,
+      "goals": 1,
+      "shots": 12,
+      "matches": 4
+    },
+    "Marco Asensio Willemsen": {
+      "xg": 0.6081907390000001,
+      "goals": 1,
+      "shots": 10,
+      "matches": 4
+    },
+    "Jordi Alba Ramos": {
+      "xg": 0.045861136,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Aymeric Laporte": {
+      "xg": 0.04145577,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Alejandro Balde Mart\u00ednez": {
+      "xg": 0.077706024,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Rodrigo Hern\u00e1ndez Cascante": {
+      "xg": 0.0056476467,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Marcos Llorente Moreno": {
+      "xg": 0.024551911,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Carlos Soler Barrag\u00e1n": {
+      "xg": 1.2714840559999998,
+      "goals": 1,
+      "shots": 5,
+      "matches": 2
+    },
+    "Pablo Sarabia Garc\u00eda": {
+      "xg": 0.88757615,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Ferr\u00e1n Torres Garc\u00eda": {
+      "xg": 1.005212115,
+      "goals": 2,
+      "shots": 4,
+      "matches": 2
+    },
+    "Pablo Mart\u00edn P\u00e1ez Gavira": {
+      "xg": 0.056229107,
+      "goals": 1,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Japan": {
+    "Junya Ito": {
+      "xg": 0.11059656,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Daichi Kamada": {
+      "xg": 0.42129175,
+      "goals": 0,
+      "shots": 6,
+      "matches": 4
+    },
+    "Ritsu Doan": {
+      "xg": 0.577215802,
+      "goals": 2,
+      "shots": 4,
+      "matches": 4
+    },
+    "Ao Tanaka": {
+      "xg": 0.87261814,
+      "goals": 1,
+      "shots": 1,
+      "matches": 1
+    },
+    "Takuma Asano": {
+      "xg": 1.2795487369999998,
+      "goals": 2,
+      "shots": 9,
+      "matches": 4
+    },
+    "Ko Itakura": {
+      "xg": 0.162244075,
+      "goals": 0,
+      "shots": 3,
+      "matches": 3
+    },
+    "Daizen Maeda": {
+      "xg": 0.53585137,
+      "goals": 1,
+      "shots": 2,
+      "matches": 2
+    },
+    "Hiroki Sakai": {
+      "xg": 0.28772855,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Takumi Minamino": {
+      "xg": 0.8339613109999999,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Wataru Endo": {
+      "xg": 0.181400907,
+      "goals": 0,
+      "shots": 6,
+      "matches": 2
+    },
+    "Hidemasa Morita": {
+      "xg": 0.190594476,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Yuki Soma": {
+      "xg": 0.13489698,
+      "goals": 0,
+      "shots": 3,
+      "matches": 1
+    },
+    "Shogo Taniguchi": {
+      "xg": 0.17448755,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Kaoru Mitoma": {
+      "xg": 0.837634306,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Maya Yoshida": {
+      "xg": 0.7835,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "USA": {
+    "Haji Wright": {
+      "xg": 0.658172932,
+      "goals": 1,
+      "shots": 7,
+      "matches": 4
+    },
+    "Weston McKennie": {
+      "xg": 0.37566195,
+      "goals": 0,
+      "shots": 5,
+      "matches": 2
+    },
+    "Yunus Dimoara Musah": {
+      "xg": 0.197483729,
+      "goals": 0,
+      "shots": 4,
+      "matches": 3
+    },
+    "Christian Pulisic": {
+      "xg": 1.1380870929999998,
+      "goals": 1,
+      "shots": 9,
+      "matches": 3
+    },
+    "Sergino Dest": {
+      "xg": 0.2518676686,
+      "goals": 0,
+      "shots": 6,
+      "matches": 4
+    },
+    "Joshua Sargent": {
+      "xg": 0.362028482,
+      "goals": 0,
+      "shots": 4,
+      "matches": 2
+    },
+    "Timothy Weah": {
+      "xg": 0.440147946,
+      "goals": 1,
+      "shots": 5,
+      "matches": 3
+    },
+    "Brenden Aaronson": {
+      "xg": 0.09428854,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Tyler Adams": {
+      "xg": 0.019808901,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Tim Ream": {
+      "xg": 0.2582279,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Giovanni Reyna": {
+      "xg": 0.08602206000000001,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Walker Zimmerman": {
+      "xg": 0.05674074,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Wales": {
+    "Neco Williams": {
+      "xg": 0.07557114100000001,
+      "goals": 0,
+      "shots": 3,
+      "matches": 1
+    },
+    "Kieffer Roberto Francisco Moore": {
+      "xg": 0.6403291090000001,
+      "goals": 0,
+      "shots": 6,
+      "matches": 3
+    },
+    "Gareth Frank Bale": {
+      "xg": 0.8052008399999999,
+      "goals": 1,
+      "shots": 2,
+      "matches": 2
+    },
+    "Harry Wilson": {
+      "xg": 0.061493684,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Aaron Ramsey": {
+      "xg": 0.025361432,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Ben Davies": {
+      "xg": 0.384204745,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Brennan Johnson": {
+      "xg": 0.124267868,
+      "goals": 0,
+      "shots": 3,
+      "matches": 3
+    },
+    "Joe Allen": {
+      "xg": 0.063709024,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Rubin Colwill": {
+      "xg": 0.025066664,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Ethan Ampadu": {
+      "xg": 0.013776194,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "France": {
+    "Kingsley Coman": {
+      "xg": 0.8713631399999999,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Youssouf Fofana": {
+      "xg": 0.16560118299999999,
+      "goals": 0,
+      "shots": 4,
+      "matches": 3
+    },
+    "Axel Disasi": {
+      "xg": 0.061025612,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Adrien Rabiot": {
+      "xg": 0.7281200580000001,
+      "goals": 1,
+      "shots": 9,
+      "matches": 5
+    },
+    "Ousmane Demb\u00e9l\u00e9": {
+      "xg": 0.362467341,
+      "goals": 0,
+      "shots": 8,
+      "matches": 5
+    },
+    "Kylian Mbapp\u00e9 Lottin": {
+      "xg": 5.016751877,
+      "goals": 9,
+      "shots": 32,
+      "matches": 7
+    },
+    "Randal Kolo Muani": {
+      "xg": 2.050369225,
+      "goals": 2,
+      "shots": 5,
+      "matches": 3
+    },
+    "Rapha\u00ebl Varane": {
+      "xg": 0.26440085,
+      "goals": 0,
+      "shots": 3,
+      "matches": 3
+    },
+    "Olivier Giroud": {
+      "xg": 3.0359552720000003,
+      "goals": 4,
+      "shots": 17,
+      "matches": 5
+    },
+    "Jules Kound\u00e9": {
+      "xg": 0.169605826,
+      "goals": 0,
+      "shots": 4,
+      "matches": 3
+    },
+    "Antoine Griezmann": {
+      "xg": 0.496320071,
+      "goals": 0,
+      "shots": 6,
+      "matches": 3
+    },
+    "Aur\u00e9lien Djani Tchouam\u00e9ni": {
+      "xg": 1.1828970979999998,
+      "goals": 1,
+      "shots": 7,
+      "matches": 6
+    },
+    "Theo Bernard Fran\u00e7ois Hern\u00e1ndez": {
+      "xg": 0.259309684,
+      "goals": 1,
+      "shots": 5,
+      "matches": 3
+    },
+    "Marcus Thuram": {
+      "xg": 0.115658596,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Ibrahima Konat\u00e9": {
+      "xg": 0.17601235,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    }
+  },
+  "Tunisia": {
+    "Anis Ben Slimane": {
+      "xg": 0.1007914,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Wahbi Khazri": {
+      "xg": 0.297766004,
+      "goals": 1,
+      "shots": 5,
+      "matches": 2
+    },
+    "A\u00efssa Bilal La\u00efdouni": {
+      "xg": 0.08097828400000001,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Youssef Msakni": {
+      "xg": 0.6425204709999999,
+      "goals": 0,
+      "shots": 9,
+      "matches": 2
+    },
+    "Issam Jebali": {
+      "xg": 0.5930872340000001,
+      "goals": 0,
+      "shots": 3,
+      "matches": 1
+    },
+    "Mohamed Dr\u00e4ger": {
+      "xg": 0.303584759,
+      "goals": 0,
+      "shots": 4,
+      "matches": 2
+    },
+    "Yassine Meriah": {
+      "xg": 0.046073906,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Ellyes Joris Skhiri": {
+      "xg": 0.10099208700000001,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Dylan Daniel Mahmoud Bronn": {
+      "xg": 0.059058707,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Ferjani Sassi": {
+      "xg": 0.020219443,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Montassar Omar Talbi": {
+      "xg": 0.012159805,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Taha Yassine Khenissi": {
+      "xg": 0.012915949,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Na\u00efm Sliti": {
+      "xg": 0.1403044,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Cameroon": {
+    "Bryan Mbeumo": {
+      "xg": 0.134345962,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Karl Brillant Toko Ekambi": {
+      "xg": 0.1803258,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Ngoran Suiru Fai Collins": {
+      "xg": 0.009452554,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Martin Hongla Yma II": {
+      "xg": 0.08237888,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Jean-Eric Maxim Choupo-Moting": {
+      "xg": 0.5235422875,
+      "goals": 1,
+      "shots": 3,
+      "matches": 2
+    },
+    "Nicolas Alexis Julio N'Koulou Ndoubena": {
+      "xg": 0.382484566,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Andr\u00e9-Frank Zambo Anguissa": {
+      "xg": 0.046351306,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Pierre Kunde Malong": {
+      "xg": 0.187109743,
+      "goals": 0,
+      "shots": 5,
+      "matches": 2
+    },
+    "Jean-Charles Castelletto": {
+      "xg": 0.8945071,
+      "goals": 1,
+      "shots": 1,
+      "matches": 1
+    },
+    "Vincent Pat\u00e9 Aboubakar": {
+      "xg": 0.5289856239999999,
+      "goals": 2,
+      "shots": 6,
+      "matches": 2
+    },
+    "Georges-K\u00e9vin Nkoudou Mbida": {
+      "xg": 0.0070103277,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Jules Olivier Ntcham": {
+      "xg": 0.03332142,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Christopher Wooh": {
+      "xg": 0.05692788,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Switzerland": {
+    "Granit Xhaka": {
+      "xg": 0.295522079,
+      "goals": 0,
+      "shots": 6,
+      "matches": 3
+    },
+    "Nico Elvedi": {
+      "xg": 0.19001445,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Manuel Obafemi Akanji": {
+      "xg": 0.8826694319999999,
+      "goals": 1,
+      "shots": 4,
+      "matches": 4
+    },
+    "Breel-Donald Embolo": {
+      "xg": 2.391196598,
+      "goals": 2,
+      "shots": 6,
+      "matches": 3
+    },
+    "Ruben Vargas": {
+      "xg": 0.295826279,
+      "goals": 0,
+      "shots": 3,
+      "matches": 3
+    },
+    "Haris Seferovi\u0107": {
+      "xg": 0.27028984,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Silvan Widmer": {
+      "xg": 0.05117428,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Djibril Sow": {
+      "xg": 0.150380136,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Edimilson Fernandes": {
+      "xg": 0.029247057,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Remo Freuler": {
+      "xg": 0.54479492,
+      "goals": 1,
+      "shots": 3,
+      "matches": 2
+    },
+    "Xherdan Shaqiri": {
+      "xg": 0.494927794,
+      "goals": 1,
+      "shots": 4,
+      "matches": 2
+    },
+    "Fabian Lukas Sch\u00e4r": {
+      "xg": 0.103672833,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Christian Fassnacht": {
+      "xg": 0.31681746,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Denis Lemi Zakaria Lako Lado": {
+      "xg": 0.04188712,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Noah Okafor": {
+      "xg": 0.032096077,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Portugal": {
+    "Ot\u00e1vio Edmilson da Silva Monteiro": {
+      "xg": 0.1035403,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "R\u00faben Diogo Da Silva Neves": {
+      "xg": 0.087037176,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Cristiano Ronaldo dos Santos Aveiro": {
+      "xg": 1.9392592669999997,
+      "goals": 1,
+      "shots": 11,
+      "matches": 5
+    },
+    "Jo\u00e3o F\u00e9lix Sequeira": {
+      "xg": 0.669207472,
+      "goals": 1,
+      "shots": 11,
+      "matches": 4
+    },
+    "Rafael Alexandre Concei\u00e7\u00e3o Le\u00e3o": {
+      "xg": 0.248383942,
+      "goals": 2,
+      "shots": 5,
+      "matches": 4
+    },
+    "Rapha\u00ebl Adelino Jos\u00e9 Guerreiro": {
+      "xg": 0.399528818,
+      "goals": 1,
+      "shots": 3,
+      "matches": 2
+    },
+    "Bruno Miguel Borges Fernandes": {
+      "xg": 1.0313368613,
+      "goals": 2,
+      "shots": 8,
+      "matches": 2
+    },
+    "Gon\u00e7alo Matias Ramos": {
+      "xg": 1.6710897059999998,
+      "goals": 3,
+      "shots": 7,
+      "matches": 2
+    },
+    "Bernardo Mota Veiga de Carvalho e Silva": {
+      "xg": 0.10927713,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Kl\u00e9per Laveran Lima Ferreira": {
+      "xg": 0.33506425,
+      "goals": 1,
+      "shots": 3,
+      "matches": 2
+    },
+    "R\u00faben Santos Gato Alves Dias": {
+      "xg": 0.03750256,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "William Silva de Carvalho": {
+      "xg": 0.048683427,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Ricardo Jorge Luz Horta": {
+      "xg": 0.458795408,
+      "goals": 1,
+      "shots": 3,
+      "matches": 1
+    },
+    "Jo\u00e3o Pedro Cavaco Cancelo": {
+      "xg": 0.054823571,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Jos\u00e9 Diogo Dalot Teixeira": {
+      "xg": 0.036435805,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Vitor Machado Ferreira": {
+      "xg": 0.053871288999999996,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Matheus Luiz Nunes": {
+      "xg": 0.007849269,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Jo\u00e3o Maria Lobo Alves Palhinha Gon\u00e7alves": {
+      "xg": 0.021024177,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Ghana": {
+    "Alidu Seidu": {
+      "xg": 0.015372672,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Mohammed Kudus": {
+      "xg": 0.658570808,
+      "goals": 2,
+      "shots": 8,
+      "matches": 3
+    },
+    "I\u00f1aki Williams Arthuer": {
+      "xg": 0.126027007,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Thomas Teye Partey": {
+      "xg": 0.23574545500000002,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Andr\u00e9 Ayew Pel\u00e9": {
+      "xg": 1.2687446599999999,
+      "goals": 1,
+      "shots": 2,
+      "matches": 2
+    },
+    "Osman Bukari": {
+      "xg": 0.2462625047,
+      "goals": 1,
+      "shots": 3,
+      "matches": 2
+    },
+    "Mohamed Salisu": {
+      "xg": 0.42841392,
+      "goals": 1,
+      "shots": 2,
+      "matches": 2
+    },
+    "Tariq Lamptey": {
+      "xg": 0.07450179,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Salis Abdul Samed": {
+      "xg": 0.026676558,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Jordan Ayew": {
+      "xg": 0.07146578,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Antoine Semenyo": {
+      "xg": 0.12024433,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Kamaldeen Sulemana": {
+      "xg": 0.081227794,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Senegal": {
+    "Boulaye Dia": {
+      "xg": 0.662240351,
+      "goals": 1,
+      "shots": 8,
+      "matches": 4
+    },
+    "Isma\u00efla Sarr": {
+      "xg": 1.8487902189999998,
+      "goals": 1,
+      "shots": 10,
+      "matches": 4
+    },
+    "Idrissa Gana Gueye": {
+      "xg": 0.332398158,
+      "goals": 0,
+      "shots": 4,
+      "matches": 3
+    },
+    "Kr\u00e9pin Diatta": {
+      "xg": 0.128994183,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Youssouf Sabaly": {
+      "xg": 0.0178921875,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Cheikh Ahmadou Bamba Mbacke Dieng": {
+      "xg": 0.3838931,
+      "goals": 1,
+      "shots": 4,
+      "matches": 3
+    },
+    "Pape Gueye": {
+      "xg": 0.094318055,
+      "goals": 0,
+      "shots": 4,
+      "matches": 3
+    },
+    "Ismail Jakobs": {
+      "xg": 0.014392905,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Nampalys Mendy": {
+      "xg": 0.09337050799999999,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Famara Diedhiou": {
+      "xg": 0.23812019599999998,
+      "goals": 1,
+      "shots": 3,
+      "matches": 1
+    },
+    "Iliman Ndiaye": {
+      "xg": 0.07411676,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Abdou Diallo": {
+      "xg": 0.035411544,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Path\u00e9 Isma\u00ebl Ciss": {
+      "xg": 0.03057826,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Kalidou Koulibaly": {
+      "xg": 0.23427999,
+      "goals": 1,
+      "shots": 1,
+      "matches": 1
+    },
+    "Pape Matar Sarr": {
+      "xg": 0.08593205500000001,
+      "goals": 0,
+      "shots": 4,
+      "matches": 1
+    }
+  },
+  "Saudi Arabia": {
+    "Mohammed Al Burayk": {
+      "xg": 0.36966906099999997,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Mohammed Kanoo": {
+      "xg": 0.319447288,
+      "goals": 0,
+      "shots": 6,
+      "matches": 2
+    },
+    "Saleh Khalid Al Shehri": {
+      "xg": 0.147030338,
+      "goals": 1,
+      "shots": 3,
+      "matches": 3
+    },
+    "Salem Mohammed Al Dawsari": {
+      "xg": 1.564055345,
+      "goals": 2,
+      "shots": 7,
+      "matches": 3
+    },
+    "Saud Abdullah Abdul Hamid": {
+      "xg": 0.005913877,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Abdulelah Saad Hameed Al-Malki": {
+      "xg": 0.13939861,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Firas Tariq Nasser Al Albirakan": {
+      "xg": 0.124001969,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Nawaf Shaker Al Abid": {
+      "xg": 0.106110047,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Abdulrahman Al-Obood": {
+      "xg": 0.041744728,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Ali Al Hassan": {
+      "xg": 0.10154356,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Sultan Abdullah Salim Al Ghannam": {
+      "xg": 0.244814519,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Abdulelah Al Amri": {
+      "xg": 0.037819926,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Poland": {
+    "Krystian Bielik": {
+      "xg": 0.136828873,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Piotr Zieli\u0144ski": {
+      "xg": 0.5838947800000001,
+      "goals": 1,
+      "shots": 3,
+      "matches": 2
+    },
+    "Robert Lewandowski": {
+      "xg": 3.125917802,
+      "goals": 2,
+      "shots": 12,
+      "matches": 3
+    },
+    "Arkadiusz Milik": {
+      "xg": 0.13519733,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Krzysztof Pi\u0105tek": {
+      "xg": 0.02819521,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Jakub Kami\u0144ski": {
+      "xg": 0.26249409,
+      "goals": 0,
+      "shots": 4,
+      "matches": 2
+    },
+    "Jakub Piotr Kiwior": {
+      "xg": 0.12449861,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Grzegorz Krychowiak": {
+      "xg": 0.02170277,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Kamil Glik": {
+      "xg": 0.150632187,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Micha\u0142 Sk\u00f3ra\u015b": {
+      "xg": 0.026707038,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Przemys\u0142aw Frankowski": {
+      "xg": 0.043646414,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Matty Cash": {
+      "xg": 0.023505978,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Qatar": {
+    "Hassan Khalid Al Heidos": {
+      "xg": 0.015712837,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Abdelkarim Hassan Al Haj Fadlalla": {
+      "xg": 0.2749146245,
+      "goals": 0,
+      "shots": 6,
+      "matches": 3
+    },
+    "Ismaeel Mohammad Mohammad": {
+      "xg": 0.35790671,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Abdulaziz Hatem Mohammed Abdullah": {
+      "xg": 0.024495702,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Pedro Miguel Correia": {
+      "xg": 0.037067295,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Akram Hassan Afif": {
+      "xg": 0.029100373,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Almoez Ali Zainalabiddin Abdulla": {
+      "xg": 0.483816448,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Mohammed Muntari": {
+      "xg": 0.184977709,
+      "goals": 1,
+      "shots": 3,
+      "matches": 2
+    }
+  },
+  "Denmark": {
+    "Andreas Evald Cornelius": {
+      "xg": 0.8015078649999999,
+      "goals": 0,
+      "shots": 5,
+      "matches": 3
+    },
+    "Christian Dannemann Eriksen": {
+      "xg": 0.154105106,
+      "goals": 0,
+      "shots": 4,
+      "matches": 3
+    },
+    "Joachim Andersen": {
+      "xg": 0.1448613,
+      "goals": 0,
+      "shots": 4,
+      "matches": 3
+    },
+    "Andreas Christensen": {
+      "xg": 0.5251976599999999,
+      "goals": 1,
+      "shots": 2,
+      "matches": 2
+    },
+    "Jesper Lindstr\u00f8m": {
+      "xg": 0.334183148,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Martin Braithwaite Christensen": {
+      "xg": 0.23786028,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Pierre-Emile H\u00f8jbjerg": {
+      "xg": 0.023862642,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Joakim M\u00e6hle": {
+      "xg": 0.042316963,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Kasper Dolberg": {
+      "xg": 0.511986249,
+      "goals": 0,
+      "shots": 4,
+      "matches": 2
+    },
+    "Mathias Jensen": {
+      "xg": 0.048329171000000004,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Andreas Skov Olsen": {
+      "xg": 0.311829907,
+      "goals": 0,
+      "shots": 4,
+      "matches": 1
+    },
+    "Alexander Hartmann Bah": {
+      "xg": 0.056216941,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    }
+  },
+  "Germany": {
+    "Joshua Kimmich": {
+      "xg": 0.334518198,
+      "goals": 0,
+      "shots": 7,
+      "matches": 3
+    },
+    "Antonio R\u00fcdiger": {
+      "xg": 0.6597156826999999,
+      "goals": 0,
+      "shots": 6,
+      "matches": 3
+    },
+    "\u0130lkay G\u00fcndo\u011fan": {
+      "xg": 1.1289538890000002,
+      "goals": 1,
+      "shots": 6,
+      "matches": 1
+    },
+    "Serge Gnabry": {
+      "xg": 0.728018954,
+      "goals": 1,
+      "shots": 12,
+      "matches": 3
+    },
+    "Jamal Musiala": {
+      "xg": 1.152516099,
+      "goals": 0,
+      "shots": 11,
+      "matches": 3
+    },
+    "Jonas Hofmann": {
+      "xg": 0.32657883,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Niclas F\u00fcllkrug": {
+      "xg": 1.688675085,
+      "goals": 2,
+      "shots": 8,
+      "matches": 3
+    },
+    "Leon Goretzka": {
+      "xg": 0.46069594999999997,
+      "goals": 0,
+      "shots": 4,
+      "matches": 3
+    },
+    "Niklas S\u00fcle": {
+      "xg": 0.07610536,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Thomas M\u00fcller": {
+      "xg": 0.270048914,
+      "goals": 0,
+      "shots": 3,
+      "matches": 1
+    },
+    "Leroy San\u00e9": {
+      "xg": 0.18344244999999998,
+      "goals": 0,
+      "shots": 3,
+      "matches": 1
+    },
+    "Kai Havertz": {
+      "xg": 1.155300964,
+      "goals": 2,
+      "shots": 5,
+      "matches": 1
+    },
+    "Mario G\u00f6tze": {
+      "xg": 0.066507556,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Mexico": {
+    "H\u00e9ctor Alfredo Moreno Herrera": {
+      "xg": 0.1766503,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Ernesto Alexis Vega Rojas": {
+      "xg": 0.6920090567,
+      "goals": 0,
+      "shots": 9,
+      "matches": 3
+    },
+    "Jorge Eduardo S\u00e1nchez Ramos": {
+      "xg": 0.0069717234,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Luis Gerardo Ch\u00e1vez Magall\u00f3n": {
+      "xg": 0.2156515785,
+      "goals": 1,
+      "shots": 10,
+      "matches": 2
+    },
+    "Hirving Rodrigo Lozano Bahena": {
+      "xg": 0.24040568040000002,
+      "goals": 0,
+      "shots": 6,
+      "matches": 3
+    },
+    "Henry Josu\u00e9 Mart\u00edn Mex": {
+      "xg": 0.6686734,
+      "goals": 1,
+      "shots": 4,
+      "matches": 2
+    },
+    "Carlos Uriel Antuna Romero": {
+      "xg": 0.30874212,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Orbel\u00edn Pineda Alvarado": {
+      "xg": 0.505017774,
+      "goals": 0,
+      "shots": 4,
+      "matches": 1
+    },
+    "Jes\u00fas Daniel Gallardo Vasconcelos": {
+      "xg": 0.06430086,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Edson Omar \u00c1lvarez Vel\u00e1zquez": {
+      "xg": 0.013687578,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Rogelio Gabriel Funes Mori": {
+      "xg": 0.06664524,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "C\u00e9sar Jasib Montes Castro": {
+      "xg": 0.0988946,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Brazil": {
+    "Vin\u00edcius Jos\u00e9 Paix\u00e3o de Oliveira J\u00fanior": {
+      "xg": 0.8115265530000001,
+      "goals": 1,
+      "shots": 9,
+      "matches": 4
+    },
+    "Carlos Henrique Casimiro": {
+      "xg": 1.1432915347,
+      "goals": 2,
+      "shots": 10,
+      "matches": 4
+    },
+    "Raphael Dias Belloli": {
+      "xg": 0.9229306609999999,
+      "goals": 0,
+      "shots": 8,
+      "matches": 3
+    },
+    "Richarlison de Andrade": {
+      "xg": 1.6176591219999998,
+      "goals": 3,
+      "shots": 8,
+      "matches": 4
+    },
+    "\u00c9der Gabriel Milit\u00e3o": {
+      "xg": 0.258765465,
+      "goals": 0,
+      "shots": 5,
+      "matches": 3
+    },
+    "Thiago Emiliano da Silva": {
+      "xg": 0.20821556000000002,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Marcos Ao\u00e1s Corr\u00eaa": {
+      "xg": 0.86164184,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Bruno Guimar\u00e3es Rodriguez Moura": {
+      "xg": 0.64781192,
+      "goals": 0,
+      "shots": 5,
+      "matches": 2
+    },
+    "Rodrygo Silva de Goes": {
+      "xg": 1.2453418959999998,
+      "goals": 0,
+      "shots": 7,
+      "matches": 4
+    },
+    "Antony Matheus dos Santos": {
+      "xg": 0.1545435,
+      "goals": 0,
+      "shots": 6,
+      "matches": 4
+    },
+    "Neymar da Silva Santos Junior": {
+      "xg": 2.129257917,
+      "goals": 2,
+      "shots": 12,
+      "matches": 3
+    },
+    "Danilo Luiz da Silva": {
+      "xg": 0.0323683795,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Alex Sandro Lobo Silva": {
+      "xg": 0.021819543,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Frederico Rodrigues Santos": {
+      "xg": 0.46720207,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Lucas Tolentino Coelho de Lima": {
+      "xg": 0.704333275,
+      "goals": 1,
+      "shots": 4,
+      "matches": 2
+    },
+    "Pedro Guilherme Abreu dos Santos": {
+      "xg": 1.215663274,
+      "goals": 1,
+      "shots": 5,
+      "matches": 2
+    },
+    "Daniel Alves da Silva": {
+      "xg": 0.120014081,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Gleison Bremer Silva Nascimento": {
+      "xg": 0.34439024,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Gabriel Teodoro Martinelli Silva": {
+      "xg": 0.40582978700000005,
+      "goals": 0,
+      "shots": 4,
+      "matches": 1
+    },
+    "Gabriel Fernando de Jesus": {
+      "xg": 0.323986363,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    }
+  },
+  "Argentina": {
+    "Rodrigo Javier De Paul": {
+      "xg": 0.570042511,
+      "goals": 0,
+      "shots": 7,
+      "matches": 5
+    },
+    "Lionel Andr\u00e9s Messi Cuccittini": {
+      "xg": 7.598649224999999,
+      "goals": 9,
+      "shots": 34,
+      "matches": 7
+    },
+    "Nahuel Molina Lucero": {
+      "xg": 0.485319467,
+      "goals": 1,
+      "shots": 2,
+      "matches": 2
+    },
+    "Lautaro Javier Mart\u00ednez": {
+      "xg": 2.9050467529999997,
+      "goals": 1,
+      "shots": 15,
+      "matches": 6
+    },
+    "Enzo Fernandez": {
+      "xg": 1.0506286150000002,
+      "goals": 1,
+      "shots": 9,
+      "matches": 6
+    },
+    "Germ\u00e1n Alejandro Pezzella": {
+      "xg": 0.04452438,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Leandro Daniel Paredes": {
+      "xg": 1.5813709569999999,
+      "goals": 2,
+      "shots": 3,
+      "matches": 3
+    },
+    "Gonzalo Ariel Montiel": {
+      "xg": 1.587604363,
+      "goals": 2,
+      "shots": 3,
+      "matches": 2
+    },
+    "Alexis Mac Allister": {
+      "xg": 0.5018383630000001,
+      "goals": 1,
+      "shots": 7,
+      "matches": 3
+    },
+    "\u00c1ngel Fabi\u00e1n Di Mar\u00eda Hern\u00e1ndez": {
+      "xg": 0.53383544,
+      "goals": 1,
+      "shots": 7,
+      "matches": 3
+    },
+    "Juli\u00e1n \u00c1lvarez": {
+      "xg": 1.908327433,
+      "goals": 4,
+      "shots": 11,
+      "matches": 5
+    },
+    "Paulo Bruno Exequiel Dybala": {
+      "xg": 0.7835,
+      "goals": 1,
+      "shots": 1,
+      "matches": 1
+    },
+    "Alejandro Dar\u00edo G\u00f3mez": {
+      "xg": 0.023071868,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Nicol\u00e1s Alejandro Tagliafico": {
+      "xg": 0.9122210500000001,
+      "goals": 0,
+      "shots": 3,
+      "matches": 3
+    },
+    "Exequiel Alejandro Palacios": {
+      "xg": 0.046685893,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Marcos Javier Acu\u00f1a": {
+      "xg": 0.076122072,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Lisandro Mart\u00ednez": {
+      "xg": 0.33156127,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Nicol\u00e1s Hern\u00e1n Otamendi": {
+      "xg": 0.048093256,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Costa Rica": {
+    "Keysher Fuller Spence": {
+      "xg": 0.31160433,
+      "goals": 1,
+      "shots": 3,
+      "matches": 2
+    },
+    "Yeltsin Ignacio Tejeda Valverde": {
+      "xg": 0.522077037,
+      "goals": 1,
+      "shots": 2,
+      "matches": 1
+    },
+    "Kendall Jamaal Waston Manley": {
+      "xg": 0.099276,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Juan Pablo Vargas Campos": {
+      "xg": 0.18427365,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Jewison Bennette": {
+      "xg": 0.037811525,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Gerson Torres Barrantes": {
+      "xg": 0.01353695,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Francisco Javier Calvo Quesada": {
+      "xg": 0.014244432,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Joel Nathaniel Campbell Samuels": {
+      "xg": 0.051288527,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Serbia": {
+    "Nikola Milenkovi\u0107": {
+      "xg": 0.123164077,
+      "goals": 0,
+      "shots": 3,
+      "matches": 3
+    },
+    "Andrija \u017divkovi\u0107": {
+      "xg": 0.030001678,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Du\u0161an Vlahovi\u0107": {
+      "xg": 0.76244751,
+      "goals": 1,
+      "shots": 3,
+      "matches": 1
+    },
+    "Aleksandar Mitrovi\u0107": {
+      "xg": 1.5016422139999999,
+      "goals": 2,
+      "shots": 10,
+      "matches": 2
+    },
+    "Du\u0161an Tadi\u0107": {
+      "xg": 0.061684445,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Luka Jovi\u0107": {
+      "xg": 0.05817553,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Nemanja Radonji\u0107": {
+      "xg": 0.051502228,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Filip Mladenovi\u0107": {
+      "xg": 0.026318645,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Strahinja Pavlovi\u0107": {
+      "xg": 0.177865885,
+      "goals": 1,
+      "shots": 2,
+      "matches": 2
+    },
+    "Darko Lazovi\u0107": {
+      "xg": 0.018288644,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Filip Kosti\u0107": {
+      "xg": 0.012009094,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Sergej Milinkovi\u0107-Savi\u0107": {
+      "xg": 0.200274783,
+      "goals": 1,
+      "shots": 3,
+      "matches": 1
+    },
+    "Sa\u0161a Luki\u0107": {
+      "xg": 0.039666813,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Marko Gruji\u0107": {
+      "xg": 0.027356416,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Australia": {
+    "Harry Souttar": {
+      "xg": 0.06809473,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Craig Goodwin": {
+      "xg": 0.205087522,
+      "goals": 1,
+      "shots": 2,
+      "matches": 2
+    },
+    "Aziz Eraltay Behich": {
+      "xg": 0.126898918,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Ajdin Hrustic": {
+      "xg": 0.033247408,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Garang Kuol": {
+      "xg": 0.23394231,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Riley McGree": {
+      "xg": 0.08010532199999999,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Mitchell Thomas Duke": {
+      "xg": 0.25473211900000003,
+      "goals": 1,
+      "shots": 7,
+      "matches": 3
+    },
+    "Jackson Irvine": {
+      "xg": 0.33239220599999997,
+      "goals": 0,
+      "shots": 3,
+      "matches": 3
+    },
+    "Mathew Leckie": {
+      "xg": 0.11353828,
+      "goals": 1,
+      "shots": 1,
+      "matches": 1
+    },
+    "Keanu Baccus": {
+      "xg": 0.035468098,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Fran Kara\u010di\u0107": {
+      "xg": 0.05547327569999999,
+      "goals": 0,
+      "shots": 3,
+      "matches": 1
+    },
+    "Aaron Mooy": {
+      "xg": 0.039191317,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "Uruguay": {
+    "Mat\u00edas Vecino Falero": {
+      "xg": 0.052239094,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Federico Santiago Valverde Dipetta": {
+      "xg": 0.1166536996,
+      "goals": 0,
+      "shots": 7,
+      "matches": 3
+    },
+    "Diego Roberto God\u00edn Leal": {
+      "xg": 0.054689027,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Jos\u00e9 Mar\u00eda Gim\u00e9nez de Vargas": {
+      "xg": 0.129368291,
+      "goals": 0,
+      "shots": 3,
+      "matches": 3
+    },
+    "Rodrigo Bentancur Colm\u00e1n": {
+      "xg": 0.620971297,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Edinson Roberto Cavani G\u00f3mez": {
+      "xg": 0.17895877999999998,
+      "goals": 0,
+      "shots": 3,
+      "matches": 2
+    },
+    "Darwin Gabriel N\u00fa\u00f1ez Ribeiro": {
+      "xg": 0.21691335099999998,
+      "goals": 0,
+      "shots": 3,
+      "matches": 3
+    },
+    "Math\u00edas Olivera Miramontes": {
+      "xg": 0.08097578899999999,
+      "goals": 0,
+      "shots": 2,
+      "matches": 1
+    },
+    "Maximiliano G\u00f3mez Gonz\u00e1lez": {
+      "xg": 0.077775581,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Luis Alberto Su\u00e1rez D\u00edaz": {
+      "xg": 0.361762436,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Giorgian Daniel De Arrascaeta Benedetti": {
+      "xg": 1.13451217,
+      "goals": 2,
+      "shots": 3,
+      "matches": 2
+    },
+    "Facundo Pellistri Rebollo": {
+      "xg": 0.099497445,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Sebasti\u00e1n Coates Ni\u00f3n": {
+      "xg": 0.103292696,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Diego Nicol\u00e1s De La Cruz Arcosa": {
+      "xg": 0.0429242,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  },
+  "South Korea": {
+    "Ui-Jo Hwang": {
+      "xg": 0.323128,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "In-Beom Hwang": {
+      "xg": 0.197748277,
+      "goals": 0,
+      "shots": 6,
+      "matches": 4
+    },
+    "Min Jae Kim": {
+      "xg": 0.105906885,
+      "goals": 0,
+      "shots": 2,
+      "matches": 2
+    },
+    "Kang-In Lee": {
+      "xg": 0.117975209,
+      "goals": 0,
+      "shots": 5,
+      "matches": 3
+    },
+    "Gue-Sung Cho": {
+      "xg": 0.71258904,
+      "goals": 2,
+      "shots": 8,
+      "matches": 3
+    },
+    "Heung-Min Son": {
+      "xg": 0.45382807500000005,
+      "goals": 0,
+      "shots": 9,
+      "matches": 4
+    },
+    "Hee-Chan Hwang": {
+      "xg": 0.5679465854,
+      "goals": 1,
+      "shots": 6,
+      "matches": 2
+    },
+    "Seung-Ho Paik": {
+      "xg": 0.023081098,
+      "goals": 1,
+      "shots": 1,
+      "matches": 1
+    },
+    "Woo-Yeong Jeong": {
+      "xg": 0.03008143,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Woo-Young Jung": {
+      "xg": 0.010946972,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Jin-Su Kim": {
+      "xg": 0.285274066,
+      "goals": 0,
+      "shots": 3,
+      "matches": 1
+    },
+    "Young-Gwon Kim": {
+      "xg": 0.689242366,
+      "goals": 1,
+      "shots": 2,
+      "matches": 2
+    },
+    "Sang-Ho Na": {
+      "xg": 0.05996953,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Kyung-Won Kwon": {
+      "xg": 0.005484339,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    },
+    "Jae-Sung Lee": {
+      "xg": 0.021393217,
+      "goals": 0,
+      "shots": 1,
+      "matches": 1
+    }
+  }
+}
