@@ -842,7 +842,7 @@ function stageClass(v){
   if(v>=10)return"s3";if(v>=5)return"s2";if(v>0)return"s1";return"s0";
 }
 function renderStage(stageProbs,winProbs){
-  if(!stageProbs){document.getElementById("stageBody").innerHTML='<tr><td colspan="7" style="color:var(--tx3);padding:14px 0">Loading…</td></tr>';return;}
+  if(!stageProbs){document.getElementById("stageBody").innerHTML='<tr><td colspan="7" style="color:var(--tx3);padding:14px 0">Stage data unavailable — server may be warming up, try refreshing in a moment.</td></tr>';return;}
   const sorted=Object.entries(winProbs).sort((a,b)=>b[1]-a[1]).filter(([t])=>stageProbs[t]);
   document.getElementById("stageBody").innerHTML=sorted.map(([team])=>{
     const sp=stageProbs[team];
@@ -853,7 +853,7 @@ function renderStage(stageProbs,winProbs){
 
 function renderFixtures(fixtures){
   const el=document.getElementById("fixtureList");
-  if(!fixtures||!fixtures.length){el.innerHTML='<div style="color:var(--tx3);font-size:.83rem">No upcoming group fixtures — knockout stage underway.</div>';return;}
+  if(!fixtures||!fixtures.length){el.innerHTML='<div style="color:var(--tx3);font-size:.83rem">No fixture data available — group stage may be complete or server is still loading.</div>';return;}
   el.innerHTML=fixtures.slice(0,20).map(f=>{
     const hw=(f.home_win*100).toFixed(0),dw=(f.draw*100).toFixed(0),aw=(f.away_win*100).toFixed(0);
     const hp=f.home_win*100,dp=f.draw*100,ap=f.away_win*100;

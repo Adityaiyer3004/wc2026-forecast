@@ -127,7 +127,13 @@ def _get_or_refresh() -> dict:
         ready = _cache["probs"] is not None and age < CACHE_TTL
 
     if not ready:
-        _run_simulation()
+        if _refreshing:
+            # Background warmup already in progress — wait for it instead of
+            # spawning a second simulation that would race on the cache.
+            while _refreshing:
+                time.sleep(0.5)
+        else:
+            _run_simulation()
 
     with _lock:
         return dict(_cache)
@@ -253,7 +259,9 @@ def health():
     return jsonify({"status": "ok"})
 
 
+# Pre-warm cache on module import so gunicorn workers don't block the first
+# HTTP request waiting for a 50 k-sim cold start.
+threading.Thread(target=_run_simulation, daemon=True).start()
+
 if __name__ == "__main__":
-    # Local dev: pre-warm cache on startup
-    threading.Thread(target=_run_simulation, daemon=True).start()
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)), debug=False)
