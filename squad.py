@@ -47,6 +47,68 @@ WC22_PEDIGREE = {
 WC22_MAX = 7
 
 
+# ── Manager pedigree (0–10) ───────────────────────────────────────────────
+# Scoring: 10=multiple major trophies, 9=WC winner, 8=continental winner,
+# 7=WC SF/finalist or serial winner, 6=experienced/good win rate, 5=average, 4=new/limited
+MANAGER_SCORES = {
+    # Elite — WC winners as manager
+    "Argentina":    10,  # Scaloni: WC 2022, Copa América 2021 + 2024
+    "France":        9,  # Deschamps: WC 2018, Euro 2016 final, WC 2022 final
+    "Croatia":       8,  # Dalić: WC 2018 final, WC 2022 3rd place
+    "Spain":         8,  # De la Fuente: Euro 2024 winner
+    "Senegal":       7,  # Cissé: AFCON 2022 winner, 10+ years in charge
+    "Ivory Coast":   7,  # Faé: AFCON 2023 winner
+    "Morocco":       7,  # Regragui: WC 2022 semi (historic), AFCON 2022 winner (clubs)
+    "England":       7,  # Tuchel: UCL winner (club), high tactical pedigree
+    "Uruguay":       7,  # Bielsa: legendary record, elite tactical reputation
+    "Austria":       7,  # Rangnick: elite pressing tactician, transformed Austria
+    "Colombia":      7,  # Lorenzo: Copa América 2024 finalist
+    "Germany":       6,  # Nagelsmann: talented, no major NT trophies yet
+    "Netherlands":   6,  # Koeman: experienced, no major NT trophies
+    "Portugal":      6,  # Martínez: WC 2018 3rd with Belgium
+    "Switzerland":   6,  # Yakin: steady, experienced
+    "Japan":         6,  # Moriyasu: consistent overachiever at WC 2022
+    "Scotland":      6,  # Clarke: qualified for multiple Euros
+    "Mexico":        6,  # Aguirre: third stint, experienced campaigner
+    "USA":           6,  # Pochettino: elite club pedigree, no NT trophies
+    "Saudi Arabia":  6,  # Experienced European coach
+    "Brazil":        5,  # Dorival Júnior: Copa América 2024 exit, under pressure
+    "Belgium":       5,  # Garcia: limited international record
+    "Norway":        5,  # Solbakken: solid but unproven at majors
+    "Sweden":        5,  # Tomasson: early tenure
+    "Ecuador":       5,  # Beccacece: young, no major trophies
+    "Canada":        5,  # Marsch: new to NT management
+    "Turkey":        5,  # Montella: limited international record
+    "Iran":          5,  # Ghalenoei: domestic pedigree only
+    "Tunisia":       5,
+    "Ghana":         5,
+    "Egypt":         5,
+    "South Korea":   5,
+    "Australia":     5,
+    "Paraguay":      5,
+    "Panama":        5,
+    "Algeria":       5,
+    "Iraq":          5,
+    "Jordan":        4,
+    "New Zealand":   4,
+    "South Africa":  4,
+    "Czechia":       4,
+    "Bosnia":        4,
+    "Qatar":         4,
+    "Haiti":         4,
+    "Curacao":       4,
+    "Cabo Verde":    4,
+    "DR Congo":      4,
+    "Uzbekistan":    4,
+}
+MANAGER_MAX = 10
+
+
+def _manager_score(team: str) -> float:
+    """Normalised manager quality 0–1."""
+    return MANAGER_SCORES.get(team, 5) / MANAGER_MAX
+
+
 # ── WC 2018 pedigree ──────────────────────────────────────────────────────
 WC18_PEDIGREE = {
     "France": 7, "Croatia": 5, "Belgium": 4, "England": 4,
@@ -286,8 +348,13 @@ def build_squad_adjustments(gemini_key: str | None = None,
     for team in WC_2026_TEAMS:
         pedigree = _wc_pedigree_score(team)
         xg_qual  = _team_xg_quality(team, stats_2022)
-        base = 1.0 + 0.12 * (pedigree - 0.3) + 0.06 * (xg_qual - 1.0)
-        base = min(max(base, 0.93), 1.07)
+        manager  = _manager_score(team)           # 0–1
+        # Pedigree 35%, xG quality 40%, manager 25% — all nudge around 1.0
+        base = (1.0
+                + 0.12 * (pedigree - 0.3)
+                + 0.06 * (xg_qual - 1.0)
+                + 0.06 * (manager - 0.5))
+        base = min(max(base, 0.90), 1.10)
         form_mult = form_scores.get(team, 1.0)
         adjustments[team] = round(base * form_mult, 4)
 
