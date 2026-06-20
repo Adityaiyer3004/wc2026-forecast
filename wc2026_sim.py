@@ -228,6 +228,7 @@ def run_with_results(
     n: int = 50_000,
     seed: int = 2026,
     squad_adjustments: dict[str, float] | None = None,
+    use_live_ratings: bool = True,
 ) -> dict[str, float]:
     """
     Core simulation. Returns {team: win_probability} dict.
@@ -235,14 +236,25 @@ def run_with_results(
     `matches` can be tuples or dicts from fetch.py.
     `squad_adjustments` is an optional {team: multiplier} from squad.py that
     scales each team's attack rating before the Bayesian update is applied.
+    `use_live_ratings` fetches current Elo ratings to replace hardcoded priors.
     """
     np.random.seed(seed)
 
-    # Apply squad multipliers to the base priors
-    base_teams = TEAMS
+    # Layer 1: start from live Elo ratings (falls back to hardcoded if unavailable)
+    if use_live_ratings:
+        try:
+            from ratings import apply_elo_ratings
+            base_teams = apply_elo_ratings(TEAMS)
+        except Exception as e:
+            print(f"[sim] Elo fetch failed ({e}), using hardcoded ratings")
+            base_teams = TEAMS
+    else:
+        base_teams = TEAMS
+
+    # Layer 2: squad/form/manager multipliers from squad.py
     if squad_adjustments:
         import copy
-        base_teams = copy.deepcopy(TEAMS)
+        base_teams = copy.deepcopy(base_teams)
         for team, mult in squad_adjustments.items():
             if team in base_teams:
                 base_teams[team]["atk"] = round(base_teams[team]["atk"] * mult, 4)
