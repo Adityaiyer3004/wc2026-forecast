@@ -637,6 +637,9 @@ footer{
     <div class="card-hd">
       <div class="card-hd-accent"></div>
       <h2>Completed Matches (<span id="matchCountInline">—</span>)</h2>
+      <button onclick="refreshScores()" title="Fetch latest scores from ESPN" style="margin-left:auto;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.22);color:var(--green);font-size:.65rem;font-weight:700;padding:4px 12px;border-radius:99px;cursor:pointer;letter-spacing:.06em;display:flex;align-items:center;gap:5px;font-family:inherit">
+        <span style="width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 5px var(--green);display:inline-block;animation:throb 1.6s infinite"></span>LIVE · REFRESH
+      </button>
     </div>
     <div class="results-grid" id="resultsList"></div>
   </div>
@@ -1009,6 +1012,47 @@ async function loadFromAPI(){
   }
 }
 loadFromAPI();
+
+// ─── LIVE SCORE POLLING (every 5 min) ────────────────────────────────────────
+async function refreshScores(){
+  try{
+    const resp=await fetch("/api/scores");
+    if(!resp.ok)return;
+    const d=await resp.json();
+    if(!d.matches||!d.matches.length)return;
+    _apiMatches=d.matches;
+    // Update group_played for re-runs
+    _groupPlayed={};
+    for(const m of d.matches){
+      const g=TEAMS[m.home]?.group;if(!g)continue;
+      if(!_groupPlayed[g])_groupPlayed[g]=[];
+      _groupPlayed[g].push([m.home,m.away,m.home_goals,m.away_goals]);
+    }
+    renderResults(d.matches);
+    renderGroupStage(d.matches);
+    renderShocks(d.matches);
+    document.getElementById("matchCount").textContent=`${d.match_count} of 72`;
+    document.getElementById("matchCountInline").textContent=d.match_count;
+    // Update ticker with fresh results too
+    const track=document.getElementById("ticker-track");
+    if(track){
+      const recent=d.matches.slice(-10);
+      const items=recent.map(m=>`${FLAGS[m.home]||""}${m.home} <strong>${m.home_goals}–${m.away_goals}</strong> ${m.away}${FLAGS[m.away]||""}`);
+      if(items.length){
+        track.innerHTML=[...items,...items].map(s=>`<span class="ticker-item">${s}</span>`).join("");
+      }
+    }
+    // Show live chip on the results card header
+    const fetchedAt=new Date(d.fetched_at);
+    const mins=Math.round((Date.now()-fetchedAt)/60000);
+    document.getElementById("lastUpdated").textContent=
+      mins===0?"Just now":`${mins}m ago`;
+  }catch(e){
+    console.warn("Score refresh failed:",e);
+  }
+}
+// Start polling after 30s (give initial full load time to settle), then every 5 min
+setTimeout(()=>{refreshScores();setInterval(refreshScores,5*60*1000);},30000);
 
 // ─── CONFETTI BURST ───────────────────────────────────────────────────────────
 (function(){

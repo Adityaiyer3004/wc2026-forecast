@@ -160,6 +160,33 @@ def api_odds():
     })
 
 
+@app.route("/api/scores")
+def api_scores():
+    """Live match scores — fetches ESPN directly, no simulation needed.
+    Called by the frontend every 5 minutes to keep the results section live."""
+    try:
+        matches = fetch_results()
+    except Exception as e:
+        app.logger.warning(f"Live score fetch failed: {e}")
+        return jsonify({"matches": [], "match_count": 0,
+                        "fetched_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                        "error": str(e)})
+
+    match_list = [
+        {
+            "home": m["home"], "away": m["away"],
+            "home_goals": m["home_goals"], "away_goals": m["away_goals"],
+            "date": m.get("date", ""),
+        }
+        for m in matches
+    ]
+    return jsonify({
+        "matches":    match_list,
+        "match_count": len(match_list),
+        "fetched_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    })
+
+
 @app.route("/refresh", methods=["POST"])
 def refresh():
     """Triggered by Cloud Scheduler — runs a fresh simulation."""
