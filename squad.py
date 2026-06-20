@@ -149,41 +149,60 @@ def _team_xg_quality(team: str, player_stats: dict[str, dict]) -> float:
     return min(max(top5_total / 6.5, 0.4), 2.5)
 
 
-def _gemini_form_score(team: str, key_players: list[str], gemini_key: str) -> float:
+def _gemini_form_batch(team_players: dict[str, list[str]], gemini_key: str) -> dict[str, float]:
     """
-    Ask Gemini (free tier) to rate a team's key players' current club form 0-10.
-    Requires a free Gemini API key from aistudio.google.com.
-    Returns a normalized multiplier (0.85 – 1.15).
+    Single Gemini call for ALL teams — avoids 15 req/min rate limit on free tier.
+    Returns {team: form_multiplier (0.96–1.04)}.
+    Results cached to disk for 6 hours.
     """
-    names = ", ".join(key_players[:5])
+    import time as _time
+
+    cache_file = CACHE_DIR / "gemini_form.json"
+    if cache_file.exists():
+        cached = json.loads(cache_file.read_text())
+        age = _time.time() - cached.get("_ts", 0)
+        if age < 21600:  # 6-hour TTL
+            return {k: v for k, v in cached.items() if k != "_ts"}
+
+    lines = []
+    for team, players in team_players.items():
+        names = ", ".join(players[:3])
+        lines.append(f"- {team}: {names}")
+
     prompt = (
-        f"Rate the current club form (2025/26 season) of these players from 0-10 "
-        f"based on goals, assists, and xG performance: {names}. "
-        f"Reply ONLY with a JSON object like: "
-        f'{{"{key_players[0]}": 7, "{key_players[1] if len(key_players)>1 else "x"}": 8, ...}} '
-        f"No explanation, just the JSON."
+        "You are a football analyst. Using Google Search, look up the current 2025/26 club season "
+        "form for the key players listed below. Rate each NATIONAL TEAM's collective player form "
+        "from 0 to 10 based on recent goals, assists, xG, and minutes played at club level.\n\n"
+        "Teams and their key players:\n" + "\n".join(lines) + "\n\n"
+        "Reply ONLY with a valid JSON object mapping team name to score (0-10). "
+        "Example: {\"Argentina\": 8, \"France\": 7, ...}\n"
+        "Include every team listed. No explanation, just the JSON."
     )
+
     payload = json.dumps({
         "contents": [{"parts": [{"text": prompt}]}],
         "tools": [{"google_search": {}}],
     }).encode()
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={gemini_key}"
+    url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
+           f"gemini-2.0-flash:generateContent?key={gemini_key}")
     req = urllib.request.Request(url, data=payload, method="POST",
                                   headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=20) as r:
+    with urllib.request.urlopen(req, timeout=60) as r:
         resp = json.loads(r.read())
 
     text = resp["candidates"][0]["content"]["parts"][0]["text"]
-    # Extract JSON from response
-    start = text.find("{")
-    end = text.rfind("}") + 1
+    start, end = text.find("{"), text.rfind("}") + 1
     if start == -1:
-        return 1.0
-    ratings = json.loads(text[start:end])
-    avg_rating = sum(ratings.values()) / len(ratings) if ratings else 5.0
-    # Map 0-10 rating to 0.85-1.15 multiplier
-    return 0.85 + (avg_rating / 10) * 0.30
+        return {}
+    scores: dict[str, float] = json.loads(text[start:end])
+
+    # Map 0-10 score → 0.96–1.04 multiplier
+    result = {team: round(min(max(0.96 + (s / 10) * 0.08, 0.96), 1.04), 4)
+              for team, s in scores.items()}
+
+    cache_file.write_text(json.dumps({**result, "_ts": _time.time()}))
+    return result
 
 
 def build_squad_adjustments(gemini_key: str | None = None) -> dict[str, float]:
@@ -217,25 +236,25 @@ def build_squad_adjustments(gemini_key: str | None = None) -> dict[str, float]:
         "Portugal","Colombia","DR Congo","Uzbekistan","England","Croatia","Ghana","Panama",
     ]
 
+    # Optional: single Gemini batch call for all teams (1 request, not 48)
+    gemini_scores: dict[str, float] = {}
+    if gemini_key:
+        try:
+            print("[squad] Querying Gemini for current club form (1 batch call)...", end=" ", flush=True)
+            gemini_scores = _gemini_form_batch(team_key_players, gemini_key)
+            print(f"OK — {len(gemini_scores)} teams scored")
+        except Exception as e:
+            print(f"FAILED: {e}")
+
     print("[squad] Computing squad adjustments...")
     for team in WC_2026_TEAMS:
         pedigree = _wc_pedigree_score(team)           # 0–1
         xg_qual  = _team_xg_quality(team, stats_2022) # 0.5–2.0
 
-        # Base multiplier: pedigree (35%) + xG quality (65%), centered at 1.0
-        # Range kept tight (0.93–1.07) so squad signal nudges rather than overrides market priors
         base = 1.0 + 0.12 * (pedigree - 0.3) + 0.06 * (xg_qual - 1.0)
         base = min(max(base, 0.93), 1.07)
 
-        # Optional: Gemini current form layer
-        form_mult = 1.0
-        if gemini_key and team in team_key_players and team_key_players[team]:
-            try:
-                form_mult = _gemini_form_score(team, team_key_players[team], gemini_key)
-                form_mult = min(max(form_mult, 0.96), 1.04)  # cap Gemini influence to ±4%
-            except Exception as e:
-                print(f"  [squad] Gemini failed for {team}: {e}")
-
+        form_mult = gemini_scores.get(team, 1.0)
         adjustments[team] = round(base * form_mult, 4)
 
     return adjustments
