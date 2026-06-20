@@ -20,7 +20,8 @@ REGION="us-central1"
 SERVICE="wc2026-forecast"
 # ──────────────────────────────────────────────────────────────────────────
 
-GEMINI_KEY="${GEMINI_API_KEY:-}"
+GROQ_KEY="${GROQ_API_KEY:-}"
+TAVILY_KEY="${TAVILY_API_KEY:-}"
 IMAGE="$REGION-docker.pkg.dev/$PROJECT_ID/wc2026/$SERVICE:latest"
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -53,11 +54,11 @@ echo ""
 echo "[4-5/6] Building image and deploying to Cloud Run..."
 
 ENV_VARS="N_SIMS=50000"
-if [ -n "$GEMINI_KEY" ]; then
-  ENV_VARS="$ENV_VARS,GEMINI_API_KEY=$GEMINI_KEY"
-  echo "  Gemini key: included ✓"
+if [ -n "$GROQ_KEY" ] && [ -n "$TAVILY_KEY" ]; then
+  ENV_VARS="$ENV_VARS,GROQ_API_KEY=$GROQ_KEY,TAVILY_API_KEY=$TAVILY_KEY"
+  echo "  Groq + Tavily keys: included ✓"
 else
-  echo "  Gemini key: not set (StatsBomb + pedigree only)"
+  echo "  Form keys: not set (StatsBomb + pedigree only)"
 fi
 
 gcloud run deploy "$SERVICE" \
