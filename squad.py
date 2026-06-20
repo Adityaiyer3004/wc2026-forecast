@@ -231,22 +231,29 @@ def _tavily_search(query: str, tavily_key: str) -> str:
 
 def _groq_form_batch(team_snippets: dict[str, str], groq_key: str) -> dict[str, float]:
     """
-    Single Groq call — reads Tavily snippets for all teams, outputs form scores.
-    Returns {team: form_multiplier (0.96–1.04)}.
+    Single Groq call — reads Tavily snippets, outputs form + injury scores.
+    Returns {team: combined_multiplier} where:
+      form_mult    = 0.96 + (form/10) * 0.08   → range 0.96–1.04
+      injury_mult  = 1.0  - (injuries/10) * 0.06 → range 0.94–1.00
+      combined     = form_mult * injury_mult       → range ~0.90–1.04
     """
     lines = [f"- {team}: {snippet}" for team, snippet in team_snippets.items()]
     prompt = (
-        "You are a football analyst. Based ONLY on the news snippets below about players' "
-        "2025/26 club season, rate each national team's collective player form from 0-10. "
-        "10 = exceptional form, 5 = average, 0 = very poor/injured.\n\n"
+        "You are a football analyst. Based ONLY on the news snippets below, rate each national "
+        "team on TWO signals (integers 0-10):\n"
+        "  form: collective club form this 2025/26 season "
+        "(10=exceptional, 5=average, 0=very poor)\n"
+        "  injuries: injury severity heading into WC 2026 "
+        "(0=fully fit, 5=one key player out, 10=multiple starters injured)\n\n"
         + "\n".join(lines)
-        + "\n\nReply ONLY with valid JSON: {\"Team\": score, ...}. No explanation."
+        + "\n\nReply ONLY with valid JSON: "
+        "{\"Team\": {\"form\": 7, \"injuries\": 2}, ...}. No explanation."
     )
     payload = json.dumps({
         "model": "llama-3.3-70b-versatile",
         "messages": [{"role": "user", "content": prompt}],
         "temperature": 0.1,
-        "max_tokens": 600,
+        "max_tokens": 900,
     }).encode()
     req = urllib.request.Request(
         "https://api.groq.com/openai/v1/chat/completions", data=payload, method="POST",
@@ -263,38 +270,48 @@ def _groq_form_batch(team_snippets: dict[str, str], groq_key: str) -> dict[str, 
     if start == -1:
         return {}
     scores: dict = json.loads(text[start:end])
-    return {team: round(min(max(0.96 + (float(s) / 10) * 0.08, 0.96), 1.04), 4)
-            for team, s in scores.items()}
+    result: dict[str, float] = {}
+    for team, s in scores.items():
+        if isinstance(s, dict):
+            form     = float(s.get("form", 5))
+            injuries = float(s.get("injuries", 0))
+        else:
+            form, injuries = float(s), 0.0
+        form_mult   = min(max(0.96 + (form / 10) * 0.08, 0.96), 1.04)
+        injury_mult = 1.0 - (injuries / 10) * 0.06
+        result[team] = round(form_mult * injury_mult, 4)
+    return result
 
 
 def _groq_tavily_form(team_players: dict[str, list[str]],
                       groq_key: str, tavily_key: str) -> dict[str, float]:
     """
-    Pipeline: Tavily search per team (cached 24h) → single Groq call → form multipliers.
-    Uses ~26 Tavily credits per day (~780/month, within 1,000 free limit).
+    Pipeline: Tavily search per team → single Groq call → form + injury multipliers.
+    Each search covers both form and injury signals (zero extra Tavily credits vs. form-only).
+    Uses ~26 Tavily credits per run, cached 6h (~780/month, within 1,000 free limit).
     """
     import time as _time
 
-    cache_file = CACHE_DIR / "form_scores.json"
+    cache_file = CACHE_DIR / "form_injury_scores.json"
     if cache_file.exists():
         cached = json.loads(cache_file.read_text())
         age = _time.time() - cached.get("_ts", 0)
         if age < 21600:  # 6h TTL
             return {k: v for k, v in cached.items() if k != "_ts"}
 
-    # 1. Tavily: 1 search per team (only teams with StatsBomb player data)
-    print(f"\n    Searching current form for {len(team_players)} teams via Tavily...", flush=True)
+    # 1. Tavily: 1 search per team — query covers form AND injury in one shot
+    print(f"\n    Searching form + injuries for {len(team_players)} teams via Tavily...", flush=True)
     team_snippets: dict[str, str] = {}
     for team, players in team_players.items():
         names = " ".join(players[:2])
-        query = f"{names} 2025/26 club season goals form stats"
+        query = f"{names} WC 2026 injuries fitness form 2025/26"
         try:
             team_snippets[team] = _tavily_search(query, tavily_key)
         except Exception:
             team_snippets[team] = ""
 
-    # 2. Groq: single batch call over all snippets
-    print(f"    Scoring with Groq LLaMA 3.3 70B...", flush=True)
+    # 2. Groq: single batch call — extracts form + injury scores, returns combined mult
+    print(f"    Scoring form + injuries with Groq LLaMA 3.3 70B...", flush=True)
     result = _groq_form_batch(team_snippets, groq_key)
 
     cache_file.write_text(json.dumps({**result, "_ts": _time.time()}))
@@ -335,9 +352,9 @@ def build_squad_adjustments(gemini_key: str | None = None,
     form_scores: dict[str, float] = {}
     if groq_key and tavily_key:
         try:
-            print("[squad] Fetching live form: Tavily search → Groq LLaMA 3.3 70B...", end=" ", flush=True)
+            print("[squad] Fetching form + injuries: Tavily search → Groq LLaMA 3.3 70B...", end=" ", flush=True)
             form_scores = _groq_tavily_form(team_key_players, groq_key, tavily_key)
-            print(f"OK — {len(form_scores)} teams scored")
+            print(f"OK — {len(form_scores)} teams scored (form × injury multiplier)")
         except Exception as e:
             print(f"FAILED: {e}")
     else:

@@ -53,7 +53,8 @@ echo "[3/6] Skipping separate repo create (--source handles it)"
 echo ""
 echo "[4-5/6] Building image and deploying to Cloud Run..."
 
-ENV_VARS="N_SIMS=50000"
+BUILD_TIME=$(date +%s)
+ENV_VARS="N_SIMS=50000,BUILD_TIME=$BUILD_TIME"
 if [ -n "$GROQ_KEY" ] && [ -n "$TAVILY_KEY" ]; then
   ENV_VARS="$ENV_VARS,GROQ_API_KEY=$GROQ_KEY,TAVILY_API_KEY=$TAVILY_KEY"
   echo "  Groq + Tavily keys: included ✓"
