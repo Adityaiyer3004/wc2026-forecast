@@ -72,13 +72,15 @@ def main() -> None:
         print("       Falling back to hardcoded results.")
         matches = None
 
-    # 2. Squad intelligence (StatsBomb WC 2022 + optional Gemini current form)
-    gemini_key = os.environ.get("GEMINI_API_KEY")
+    # 2. Squad intelligence (StatsBomb WC 2022 + optional Groq/Tavily current form)
+    groq_key   = os.environ.get("GROQ_API_KEY")
+    tavily_key = os.environ.get("TAVILY_API_KEY")
+    has_form = groq_key and tavily_key
     print(f"\n[2/4] Building squad adjustments (StatsBomb WC 2022", end="", flush=True)
-    print(f" + Gemini form)..." if gemini_key else f", no Gemini key)...", end=" ", flush=True)
+    print(f" + Groq/Tavily form)..." if has_form else f", no form keys)...", end=" ", flush=True)
     t0 = time.time()
     try:
-        squad_adj = build_squad_adjustments(gemini_key=gemini_key)
+        squad_adj = build_squad_adjustments(groq_key=groq_key, tavily_key=tavily_key)
         print(f"OK ({time.time()-t0:.1f}s)")
     except Exception as e:
         print(f"FAILED: {e} — skipping squad layer")

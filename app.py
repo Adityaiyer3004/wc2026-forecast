@@ -41,9 +41,10 @@ def _run_simulation() -> None:
             matches = []
 
         # 2. Squad intelligence
-        gemini_key = os.environ.get("GEMINI_API_KEY")
+        groq_key   = os.environ.get("GROQ_API_KEY")
+        tavily_key = os.environ.get("TAVILY_API_KEY")
         try:
-            squad_adj = build_squad_adjustments(gemini_key=gemini_key)
+            squad_adj = build_squad_adjustments(groq_key=groq_key, tavily_key=tavily_key)
         except Exception as e:
             app.logger.warning(f"Squad layer failed: {e}. Skipping.")
             squad_adj = None

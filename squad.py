@@ -149,84 +149,118 @@ def _team_xg_quality(team: str, player_stats: dict[str, dict]) -> float:
     return min(max(top5_total / 6.5, 0.4), 2.5)
 
 
-def _gemini_form_batch(team_players: dict[str, list[str]], gemini_key: str) -> dict[str, float]:
-    """
-    Single Gemini call for ALL teams — avoids 15 req/min rate limit on free tier.
-    Returns {team: form_multiplier (0.96–1.04)}.
-    Results cached to disk for 6 hours.
-    """
-    import time as _time
-
-    cache_file = CACHE_DIR / "gemini_form.json"
-    if cache_file.exists():
-        cached = json.loads(cache_file.read_text())
-        age = _time.time() - cached.get("_ts", 0)
-        if age < 21600:  # 6-hour TTL
-            return {k: v for k, v in cached.items() if k != "_ts"}
-
-    lines = []
-    for team, players in team_players.items():
-        names = ", ".join(players[:3])
-        lines.append(f"- {team}: {names}")
-
-    prompt = (
-        "You are a football analyst. Using Google Search, look up the current 2025/26 club season "
-        "form for the key players listed below. Rate each NATIONAL TEAM's collective player form "
-        "from 0 to 10 based on recent goals, assists, xG, and minutes played at club level.\n\n"
-        "Teams and their key players:\n" + "\n".join(lines) + "\n\n"
-        "Reply ONLY with a valid JSON object mapping team name to score (0-10). "
-        "Example: {\"Argentina\": 8, \"France\": 7, ...}\n"
-        "Include every team listed. No explanation, just the JSON."
-    )
-
+def _tavily_search(query: str, tavily_key: str) -> str:
+    """Search Tavily and return concatenated result snippets (max 400 chars)."""
     payload = json.dumps({
-        "contents": [{"parts": [{"text": prompt}]}],
-        "tools": [{"google_search": {}}],
+        "api_key": tavily_key,
+        "query": query,
+        "search_depth": "basic",
+        "max_results": 3,
     }).encode()
+    req = urllib.request.Request(
+        "https://api.tavily.com/search", data=payload, method="POST",
+        headers={"Content-Type": "application/json"},
+    )
+    with urllib.request.urlopen(req, timeout=15) as r:
+        results = json.loads(r.read())
+    snippets = [item.get("content", "") for item in results.get("results", [])]
+    return " ".join(snippets)[:400]
 
-    url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
-           f"gemini-2.0-flash:generateContent?key={gemini_key}")
-    req = urllib.request.Request(url, data=payload, method="POST",
-                                  headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=60) as r:
+
+def _groq_form_batch(team_snippets: dict[str, str], groq_key: str) -> dict[str, float]:
+    """
+    Single Groq call — reads Tavily snippets for all teams, outputs form scores.
+    Returns {team: form_multiplier (0.96–1.04)}.
+    """
+    lines = [f"- {team}: {snippet}" for team, snippet in team_snippets.items()]
+    prompt = (
+        "You are a football analyst. Based ONLY on the news snippets below about players' "
+        "2025/26 club season, rate each national team's collective player form from 0-10. "
+        "10 = exceptional form, 5 = average, 0 = very poor/injured.\n\n"
+        + "\n".join(lines)
+        + "\n\nReply ONLY with valid JSON: {\"Team\": score, ...}. No explanation."
+    )
+    payload = json.dumps({
+        "model": "llama-3.3-70b-versatile",
+        "messages": [{"role": "user", "content": prompt}],
+        "temperature": 0.1,
+        "max_tokens": 600,
+    }).encode()
+    req = urllib.request.Request(
+        "https://api.groq.com/openai/v1/chat/completions", data=payload, method="POST",
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {groq_key}",
+            "User-Agent": "Mozilla/5.0",
+        },
+    )
+    with urllib.request.urlopen(req, timeout=30) as r:
         resp = json.loads(r.read())
-
-    text = resp["candidates"][0]["content"]["parts"][0]["text"]
+    text = resp["choices"][0]["message"]["content"]
     start, end = text.find("{"), text.rfind("}") + 1
     if start == -1:
         return {}
-    scores: dict[str, float] = json.loads(text[start:end])
+    scores: dict = json.loads(text[start:end])
+    return {team: round(min(max(0.96 + (float(s) / 10) * 0.08, 0.96), 1.04), 4)
+            for team, s in scores.items()}
 
-    # Map 0-10 score → 0.96–1.04 multiplier
-    result = {team: round(min(max(0.96 + (s / 10) * 0.08, 0.96), 1.04), 4)
-              for team, s in scores.items()}
+
+def _groq_tavily_form(team_players: dict[str, list[str]],
+                      groq_key: str, tavily_key: str) -> dict[str, float]:
+    """
+    Pipeline: Tavily search per team (cached 24h) → single Groq call → form multipliers.
+    Uses ~26 Tavily credits per day (~780/month, within 1,000 free limit).
+    """
+    import time as _time
+
+    cache_file = CACHE_DIR / "form_scores.json"
+    if cache_file.exists():
+        cached = json.loads(cache_file.read_text())
+        age = _time.time() - cached.get("_ts", 0)
+        if age < 21600:  # 6h TTL
+            return {k: v for k, v in cached.items() if k != "_ts"}
+
+    # 1. Tavily: 1 search per team (only teams with StatsBomb player data)
+    print(f"\n    Searching current form for {len(team_players)} teams via Tavily...", flush=True)
+    team_snippets: dict[str, str] = {}
+    for team, players in team_players.items():
+        names = " ".join(players[:2])
+        query = f"{names} 2025/26 club season goals form stats"
+        try:
+            team_snippets[team] = _tavily_search(query, tavily_key)
+        except Exception:
+            team_snippets[team] = ""
+
+    # 2. Groq: single batch call over all snippets
+    print(f"    Scoring with Groq LLaMA 3.3 70B...", flush=True)
+    result = _groq_form_batch(team_snippets, groq_key)
 
     cache_file.write_text(json.dumps({**result, "_ts": _time.time()}))
     return result
 
 
-def build_squad_adjustments(gemini_key: str | None = None) -> dict[str, float]:
+def build_squad_adjustments(gemini_key: str | None = None,
+                            groq_key: str | None = None,
+                            tavily_key: str | None = None) -> dict[str, float]:
     """
     Main entry point. Returns {team: multiplier} for all WC 2026 teams.
 
     multiplier > 1.0 → team stronger than their betting-market prior suggests
     multiplier < 1.0 → weaker
 
-    Without a Gemini key, uses only StatsBomb + pedigree (still meaningful).
-    With a free Gemini key, adds current club form layer on top.
+    Data layers (each optional, gracefully skipped if keys absent):
+      - StatsBomb WC 2022 xG (always runs, no key needed)
+      - WC pedigree scoring (always runs)
+      - Groq + Tavily current club form (requires both keys)
     """
     print("[squad] Loading StatsBomb WC 2022 player data...")
     stats_2022 = _fetch_statsbomb_player_stats(43, 106)
 
-    # Key players per team (top 3 by xG in WC 2022, for Gemini queries)
     team_key_players: dict[str, list[str]] = {}
     for team, players in stats_2022.items():
         ranked = sorted(players.items(), key=lambda x: -x[1]["xg"])
         team_key_players[team] = [p for p, _ in ranked[:3]]
 
-    adjustments: dict[str, float] = {}
-
-    # All WC 2026 teams
     WC_2026_TEAMS = [
         "Mexico","South Korea","Czechia","South Africa","Canada","Switzerland","Bosnia","Qatar",
         "Brazil","Morocco","Scotland","Haiti","USA","Australia","Turkey","Paraguay",
@@ -236,25 +270,25 @@ def build_squad_adjustments(gemini_key: str | None = None) -> dict[str, float]:
         "Portugal","Colombia","DR Congo","Uzbekistan","England","Croatia","Ghana","Panama",
     ]
 
-    # Optional: single Gemini batch call for all teams (1 request, not 48)
-    gemini_scores: dict[str, float] = {}
-    if gemini_key:
+    form_scores: dict[str, float] = {}
+    if groq_key and tavily_key:
         try:
-            print("[squad] Querying Gemini for current club form (1 batch call)...", end=" ", flush=True)
-            gemini_scores = _gemini_form_batch(team_key_players, gemini_key)
-            print(f"OK — {len(gemini_scores)} teams scored")
+            print("[squad] Fetching live form: Tavily search → Groq LLaMA 3.3 70B...", end=" ", flush=True)
+            form_scores = _groq_tavily_form(team_key_players, groq_key, tavily_key)
+            print(f"OK — {len(form_scores)} teams scored")
         except Exception as e:
             print(f"FAILED: {e}")
+    else:
+        print("[squad] No Groq/Tavily keys — using StatsBomb + pedigree only")
 
     print("[squad] Computing squad adjustments...")
+    adjustments: dict[str, float] = {}
     for team in WC_2026_TEAMS:
-        pedigree = _wc_pedigree_score(team)           # 0–1
-        xg_qual  = _team_xg_quality(team, stats_2022) # 0.5–2.0
-
+        pedigree = _wc_pedigree_score(team)
+        xg_qual  = _team_xg_quality(team, stats_2022)
         base = 1.0 + 0.12 * (pedigree - 0.3) + 0.06 * (xg_qual - 1.0)
         base = min(max(base, 0.93), 1.07)
-
-        form_mult = gemini_scores.get(team, 1.0)
+        form_mult = form_scores.get(team, 1.0)
         adjustments[team] = round(base * form_mult, 4)
 
     return adjustments
